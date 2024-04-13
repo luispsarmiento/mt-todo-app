@@ -32,10 +32,10 @@ To get more help about tailwind configuration go check out [Configuration](https
 ## Docker
 **Each new dependency that is required should be added to package.json and the docker image should be rebuilt**.
 
-To build the image run `docker build -t clonetrello .`
+To build the image run `docker build -t mt-todo-app:dev -f dev.Dockerfile .`
 To run a container run this command:
 ```bash
-docker container run --rm --name dev_clonetrello -p 4200:4200 -v ${PWD}/src:/app/src clonetrello
+docker container run --rm --name dev-mt-todo-app -p 4200:4200 -v ${PWD}/src:/app/src mt-todo-app:dev
 ```
 To run a container in Azure using Azure Container Instances, use the following command:
 ```bash

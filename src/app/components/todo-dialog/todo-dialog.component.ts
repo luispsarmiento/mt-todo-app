@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+/*import { Component, OnInit, Inject } from '@angular/core';
 import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
 import { faClose, faCheckToSlot, faBars, faUser, faTag, faCheckSquare, faClock } from '@fortawesome/free-solid-svg-icons';
 import { ToDo } from 'src/app/models/todo.model';
@@ -43,4 +43,4 @@ export class TodoDialogComponent implements OnInit {
       isRefresh: true
     });
   }
-}
+}*/
