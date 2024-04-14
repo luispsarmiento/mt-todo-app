@@ -17,7 +17,7 @@ FROM nginx:latest
 # COPY ["src/", "/app/src/"]
 
 COPY --from=build /app/nginx.config /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist/trello-clone /usr/share/nginx/html
+COPY --from=build /app/dist/mt-todo-app /usr/share/nginx/html
 
 # EXPOSE 4200
 
