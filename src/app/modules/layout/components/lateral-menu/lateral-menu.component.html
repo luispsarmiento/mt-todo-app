@@ -1,6 +1,6 @@
-<div class="flex h-full">
+<div class="flex h-full bg-slate-900">
   <!-- Sidebar -->
-  <div class="bg-gray-800 text-white w-64 flex-shrink-0 hidden md:block">
+  <div class="bg-slate-900 text-white w-64 flex-shrink-0 hidden md:block">
     <!-- Profile information -->
     <div class="flex items-center justify-center py-4">
       <img src="https://api.lorem.space/image/face?w=400&h=400" alt="Profile Picture" class="h-12 w-12 rounded-full">
@@ -10,22 +10,22 @@
       </div>
     </div>
     <!-- Divider -->
-    <div class="border-t border-gray-700"></div>
+    <div class="border-t border-slate-700"></div>
     <!-- Sidebar content here -->
-    <ul class="py-4">
-      <li class="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+    <ul class="py-4 px-2">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
         <fa-icon class="text-yellow-400 mr-4" [icon]="faSun"></fa-icon><!-- Icon for "My Day" choice -->
         Mi día
       </li>
-      <li class="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
         <fa-icon class="text-teal-400 mr-4" [icon]="faCalendar"></fa-icon><!-- Icon for "Programado" choice -->
         Programado
       </li>
-      <li class="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
         <fa-icon class="text-red-400 mr-4" [icon]="faCircleExclamation"></fa-icon><!-- Icon for "Importante" choice -->
         Importante
       </li>
-      <li class="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
         <fa-icon class="text-green-400 mr-4" [icon]="faSquareCheck"></fa-icon><!-- Icon for "Tasks" choice -->
         Tareas
       </li>
@@ -34,14 +34,14 @@
   </div>
 
   <!-- Main content area -->
-  <div class="flex flex-col h-screen">
+  <div class="w-full flex flex-col rounded-2xl p-4 bg-slate-100 h-screen">
     <button type="button"
       aria-expanded="false"
       (click)="isOpen = !isOpen"
       cdkOverlayOrigin
       #menuOverlay="cdkOverlayOrigin" 
-      class="block w-full py-2 text-center md:hidden hover:bg-gray-200">
-      <fa-icon class="text-gray-800 p-2" [icon]="faBars"></fa-icon>
+      class="py-2 text-center absolute top-0 left-0 rounded-2xl md:hidden hover:bg-slate-200">
+      <fa-icon class="text-slate-800 p-2" [icon]="faBars"></fa-icon>
     </button>
     <ng-content></ng-content>
   </div>
@@ -53,11 +53,11 @@
   (overlayOutsideClick)="isOpen = !isOpen"
 >
 <div class="bg-black bg-opacity-50 fixed h-full items-center left-0 top-0 w-full md:hidden">
-  <div class="bg-gray-800 text-white w-64 flex-shrink-0 h-full">
+  <div class="bg-slate-900 text-white w-64 flex-shrink-0 h-full">
     <button type="button"
       type="button"
       (click)="isOpen = !isOpen"
-      class="py-2 text-center hover:bg-gray-700">
+      class="py-2 text-center hover:bg-slate-600/30">
       <fa-icon class="p-2" [icon]="faBars"></fa-icon>
     </button>
     <!-- Profile information -->
@@ -69,22 +69,22 @@
       </div>
     </div>
     <!-- Divider -->
-    <div class="border-t border-gray-700"></div>
+    <div class="border-t border-slate-700"></div>
     <!-- Sidebar content here -->
-    <ul class="py-4">
-      <li class="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+    <ul class="py-4 px-2">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
         <fa-icon class="text-yellow-400 mr-4" [icon]="faSun"></fa-icon><!-- Icon for "My Day" choice -->
         Mi día
       </li>
-      <li class="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
         <fa-icon class="text-teal-400 mr-4" [icon]="faCalendar"></fa-icon><!-- Icon for "Programado" choice -->
         Programado
       </li>
-      <li class="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
         <fa-icon class="text-red-400 mr-4" [icon]="faCircleExclamation"></fa-icon><!-- Icon for "Importante" choice -->
         Importante
       </li>
-      <li class="flex items-center px-4 py-2 hover:bg-gray-700 cursor-pointer">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
         <fa-icon class="text-green-400 mr-4" [icon]="faSquareCheck"></fa-icon><!-- Icon for "Tasks" choice -->
         Tareas
       </li>
