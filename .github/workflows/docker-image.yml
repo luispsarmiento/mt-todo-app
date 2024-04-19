@@ -50,6 +50,7 @@ jobs:
   # https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Cwindows#create-a-service-principal
   # https://github.com/marketplace/actions/azure-cli-action
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
 
@@ -63,5 +64,5 @@ jobs:
       with:
         azcliversion: 2.59.0
         inlineScript: |
-          az containerapp delete -g networking2_rg -n mt-todo-app
+          az containerapp delete -g networking2_rg -n mt-todo-app --yes
           az containerapp create --name mt-todo-app --resource-group networking2_rg --environment managedEnvironment-networking2rg-b290 --image luispuc/mt-todo-app --target-port 80 --ingress 'external' --cpu 0.25 --memory '0.5Gi'
