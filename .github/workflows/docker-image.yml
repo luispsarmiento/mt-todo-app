@@ -47,4 +47,21 @@ jobs:
         cache-from: type=gha
         cache-to: type=gha,mode=max
         platforms: linux/amd64,linux/arm64,linux/arm/v7
+  # https://learn.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Cwindows#create-a-service-principal
+  # https://github.com/marketplace/actions/azure-cli-action
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
 
+    - name: Azure Login
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Azure CLI script
+      uses: azure/cli@v2
+      with:
+        azcliversion: 2.59.0
+        inlineScript: |
+          az containerapp delete -g networking2_rg -n mt-todo-app
+          az containerapp create --name mt-todo-app --resource-group networking2_rg --environment managedEnvironment-networking2rg-b290 --image luispuc/mt-todo-app --target-port 80 --ingress 'external' --cpu 0.25 --memory '0.5Gi'
