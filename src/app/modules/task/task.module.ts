@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { TaskRoutingModule } from './task-routing.module';
 import { LayoutModule } from '../layout/layout.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { TaskComponent } from './components/task/task.component';
 
 @NgModule({
   imports: [
@@ -12,8 +13,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     TaskRoutingModule,
     SharedModule,
     LayoutModule,
-    FontAwesomeModule
+    FontAwesomeModule,
   ],
-  declarations: [TaskOverviewComponent]
+  declarations: [
+    TaskOverviewComponent,
+    TaskComponent
+  ]
 })
 export class TaskModule { }

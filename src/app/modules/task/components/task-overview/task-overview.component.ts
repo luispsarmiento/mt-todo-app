@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { 
-  faSquare,
-  faSquareCheck
-} from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-task-overview',
@@ -11,9 +8,11 @@ import {
 })
 export class TaskOverviewComponent implements OnInit {
 
-  faSquare = faSquare;
-  faSquareCheck = faSquareCheck;
-  icon = faSquare;
+  tasks: Array<any> = [
+    
+  ];
+
+  isInputValid: boolean = true;
 
   constructor(
     
@@ -22,11 +21,23 @@ export class TaskOverviewComponent implements OnInit {
   ngOnInit() {
   }
 
-  onMouseEnter(){
-    this.icon = this.faSquareCheck;
+  addTask(newTaskBox: any){
+    const _newTaskName = newTaskBox.value;
+
+    if (_newTaskName && this.isInputValid){
+      this.tasks.push({
+        title: _newTaskName
+      });
+
+      newTaskBox.value = '';
+    }
   }
 
-  onMouseLeave() {
-    this.icon = this.faSquare
+  validateInput(_newTaskName: string){
+    if (_newTaskName.length >= 80){
+      this.isInputValid = false;
+    } else {
+      this.isInputValid = true;
+    }
   }
 }
