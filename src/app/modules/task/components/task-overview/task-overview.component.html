@@ -1,17 +1,15 @@
-<app-lateral-menu>
-  <div class="w-full h-full mt-5">
-    <div class="add-task bg-white shadow-md rounded-lg px-4 py-3 flex justify-between items-center border-l-4 border-blue-400">
-      <div class="w-full">
-        <input #newTaskBox type="text" placeholder="Añadir nueva tarea" class="flex-grow text-lg font-medium text-gray-700 px-2 py-1 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none w-full" (keyup.enter)="addTask(newTaskBox)" (keyup)="validateInput(newTaskBox.value)" >
-        <span *ngIf="!isInputValid" class="text-red-400">Solo se permiten hasta 80 caracteres</span>
-      </div>
-      <!--<button class="add-button ml-4 p-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-lg focus:outline-none">
-        Añadir
-      </button>-->
+<div class="w-full h-full mt-5">
+  <div class="add-task bg-white shadow-md rounded-lg px-4 py-3 flex justify-between items-center border-l-4 border-blue-400">
+    <div class="w-full">
+      <input #newTaskBox type="text" placeholder="Añadir nueva tarea" class="flex-grow text-lg font-medium text-gray-700 px-2 py-1 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none w-full" (keyup.enter)="addTask(newTaskBox)" (keyup)="validateInput(newTaskBox.value)" >
+      <span *ngIf="!isInputValid" class="text-red-400">Solo se permiten hasta 80 caracteres</span>
     </div>
-
-    <div class="border-t border-slate-250 mt-5 mb-5"></div>
-
-    <app-task *ngFor="let task of tasks" [title]="task.title"></app-task>
+    <!--<button class="add-button ml-4 p-2 bg-blue-500 hover:bg-blue-700 text-white font-semibold rounded-lg focus:outline-none">
+      Añadir
+    </button>-->
   </div>
-</app-lateral-menu>
+
+  <div class="border-t border-slate-250 mt-5 mb-5"></div>
+
+  <app-task *ngFor="let task of tasks" [title]="task.title"></app-task>
+</div>

@@ -31,6 +31,11 @@ const routes: Routes = [
           loadChildren: () =>
             import('../users/users.module').then((m) => m.UsersModule),
         },*/
+        {
+          path: 'my-day',
+          loadChildren: () => import('../task/task.module').then(m => m.TaskModule)
+        },
+        { path: '**', redirectTo: 'my-day', pathMatch: 'full' },
       ],
     },
   ];
