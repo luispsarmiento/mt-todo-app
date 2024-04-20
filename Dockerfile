@@ -7,8 +7,8 @@ WORKDIR /app
 # COPY ["package.json", "package-lock.json", "angular.json", "tailwind.config.js", "tsconfig.app.json", "tsconfig.json", "tsconfig.spec.json", "/app/"]
 
 COPY ./ /app/
-
-RUN npm install
+# the --force options is to fix a issue with the dependencies version
+RUN npm install --force
 
 RUN npm run build
 
