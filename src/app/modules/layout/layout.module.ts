@@ -20,6 +20,9 @@ import { LateralMenuComponent } from './components/lateral-menu/lateral-menu.com
         OverlayModule,
         FontAwesomeModule,
         SharedModule
+    ],
+    exports: [
+        LateralMenuComponent
     ]
 })
 export class LayoutModule { }

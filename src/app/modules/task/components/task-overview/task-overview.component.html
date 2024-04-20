@@ -1,0 +1,12 @@
+<app-lateral-menu>
+  <div class="w-full h-full top-5">
+    <div class="task-container mx-auto mt-5">
+      <div class="task bg-white shadow-md rounded-lg px-4 py-3 flex justify-between items-center border-l-4 border-yellow-400">
+          <h3 class="task-name text-lg font-semibold text-gray-700">Nombre de la Tarea</h3>
+          <button class="edit-button relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+            <fa-icon class="absolute inset-0 m-auto text-yellow-400 text-3xl" [icon]="icon" ></fa-icon>
+          </button>
+      </div>
+    </div>
+  </div>
+</app-lateral-menu>

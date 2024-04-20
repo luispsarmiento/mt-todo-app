@@ -1,6 +1,6 @@
 <div class="flex h-full bg-slate-900">
   <!-- Sidebar -->
-  <div class="bg-slate-900 text-white w-64 flex-shrink-0 hidden md:block">
+  <div class="bg-slate-900 text-white w-64 flex-shrink-0 hidden md:block px-2">
     <!-- Profile information -->
     <div class="flex items-center justify-center py-4">
       <img src="https://api.lorem.space/image/face?w=400&h=400" alt="Profile Picture" class="h-12 w-12 rounded-full">
@@ -12,8 +12,8 @@
     <!-- Divider -->
     <div class="border-t border-slate-700"></div>
     <!-- Sidebar content here -->
-    <ul class="py-4 px-2">
-      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
+    <ul class="py-4">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer" (click)="navigateTo('my-day')">
         <fa-icon class="text-yellow-400 mr-4" [icon]="faSun"></fa-icon><!-- Icon for "My Day" choice -->
         Mi día
       </li>
@@ -54,7 +54,7 @@
   cdkConnectedOverlayHasBackdrop="true"
 >
 <div class="bg-black bg-opacity-50 fixed h-full items-center left-0 top-0 md:hidden">
-  <div class="bg-slate-900 text-white w-64 flex-shrink-0 h-full">
+  <div class="bg-slate-900 text-white w-64 flex-shrink-0 h-full px-2">
     <button type="button"
       type="button"
       (click)="isOpen = !isOpen"
@@ -72,8 +72,8 @@
     <!-- Divider -->
     <div class="border-t border-slate-700"></div>
     <!-- Sidebar content here -->
-    <ul class="py-4 px-2">
-      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
+    <ul class="py-4">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer" >
         <fa-icon class="text-yellow-400 mr-4" [icon]="faSun"></fa-icon><!-- Icon for "My Day" choice -->
         Mi día
       </li>

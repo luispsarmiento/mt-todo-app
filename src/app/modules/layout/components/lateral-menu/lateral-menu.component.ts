@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { 
   faSun, 
   faCalendar,
@@ -22,9 +23,14 @@ export class LateralMenuComponent implements OnInit {
 
   isOpen = false;
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit() {
   }
 
+  navigateTo(route: string) {
+    this.router.navigate([route]);
+  }
 }
