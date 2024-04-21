@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { OverlayService } from './overlay.service';
 import { ToastComponent } from '../modules/shared/components/toast/toast.component';
 
@@ -7,9 +7,20 @@ import { ToastComponent } from '../modules/shared/components/toast/toast.compone
 })
 export class ToastService {
 
+  public closeEvt: any = new EventEmitter<boolean>();
+
   constructor(private overlayService: OverlayService) { }
 
-  success(message: string) {
-    this.overlayService.open(ToastComponent, { message: message });
+  success(message: string, closeMessage?: string) {
+    this.overlayService.open(ToastComponent, { message: message, closeMessage: closeMessage });
+    return this;
+  }
+
+  close(){
+    this.overlayService.close(true);
+  }
+
+  afterDismissed() {
+    return this.overlayService.afterDismissed()
   }
 }

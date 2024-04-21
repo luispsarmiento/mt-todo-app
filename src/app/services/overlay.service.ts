@@ -1,6 +1,7 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Injectable, InjectionToken, Injector } from '@angular/core';
+import { Subject } from 'rxjs';
 
 export const OVERLAY_DATA = new InjectionToken<any>('OverlayData');
 
@@ -10,6 +11,7 @@ export const OVERLAY_DATA = new InjectionToken<any>('OverlayData');
 export class OverlayService {
 
   private overlayRef: any;
+  public afterClose = new Subject<any>();
 
   constructor(private overlay: Overlay, private injector: Injector) { }
 
@@ -23,9 +25,11 @@ export class OverlayService {
     overlayRef.attach(componentPortal);
   }
 
-  close() {
+  close(data?: any) {
     if (this.overlayRef) {
       this.overlayRef.dispose();
+      this.afterClose.next(data);
+      this.afterClose.complete();
     }
   }
 
@@ -40,5 +44,9 @@ export class OverlayService {
     this.overlayRef = this.overlay.create(overlayConfig);
     this.overlayRef.backdropClick().subscribe(() => this.overlayRef.dispose());
     return this.overlayRef;
+  }
+
+  afterDismissed() {
+    return this.afterClose.asObservable();
   }
 }
