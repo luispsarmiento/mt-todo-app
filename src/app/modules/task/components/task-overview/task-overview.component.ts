@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { liveQuery } from 'dexie';
+import { DbService } from 'src/app/services/db.service';
 
 
 @Component({
@@ -8,15 +10,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskOverviewComponent implements OnInit {
 
-  tasks: Array<any> = [
+  /*tasks: Array<any> = [
     
-  ];
+  ];*/
 
   isInputValid: boolean = true;
 
   constructor(
-    
+    private db: DbService
   ) { }
+
+  tasks$ = liveQuery(() => this.listTasks());
+
+  async listTasks() {
+    return await this.db.find('Task')
+      /*.where({
+        todoListId: this.todoList.id,
+      })
+      .toArray();*/
+  }
 
   ngOnInit() {
   }
@@ -25,12 +37,24 @@ export class TaskOverviewComponent implements OnInit {
     const _newTaskName = newTaskBox.value;
 
     if (_newTaskName && this.isInputValid){
-      this.tasks.push({
+      /*this.tasks.push({
         title: _newTaskName
-      });
+      });*/
+
+      this.db.add('Task', {
+        title: _newTaskName
+      })
 
       newTaskBox.value = '';
     }
+  }
+
+  deleteTask(task: any){
+    this.db.delete('Task', task.id)
+  }
+
+  updateTask(task: any){
+    this.db.update('Task', task.id, task)
   }
 
   validateInput(_newTaskName: string){

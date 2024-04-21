@@ -11,5 +11,10 @@
 
   <div class="border-t border-slate-250 mt-5 mb-5"></div>
 
-  <app-task *ngFor="let task of tasks" [title]="task.title"></app-task>
+  <app-task 
+    *ngFor="let task of tasks$ | async" 
+    [title]="task.title"
+    [isDone]="task.isDone ?? false" 
+    (onDelete)="deleteTask(task)"
+    (onDone)="task.isDone = $event; updateTask(task)"></app-task>
 </div>
