@@ -73,7 +73,7 @@ export class TaskService {
     return throwError(errorMessage);
   }
 
-  public localSave(action: 'add' | 'update' | 'delete', task: Task) {
+  public localSave(action: 'add' | 'update' | 'delete' | 'find', task: Task) {
     switch(action) {
       case 'add':
         this.db.add('Task', task);
@@ -83,6 +83,9 @@ export class TaskService {
         break;
       case 'delete':
         this.delete(task);
+        break;
+      case 'find':
+        this.db.find('Task');
         break;
     }
   }

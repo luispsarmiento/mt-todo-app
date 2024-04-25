@@ -4,7 +4,7 @@ RUN mkdir /app
 
 WORKDIR /app
 
-COPY ["package.json", "package-lock.json", "angular.json", "tailwind.config.js", "tsconfig.app.json", "tsconfig.json", "tsconfig.spec.json", "ngsw-config.json", "/app/"]
+COPY ["package.json", "package-lock.json", "angular.json", "tailwind.config.js", "tsconfig.app.json", "tsconfig.json", "tsconfig.spec.json", "ngsw-config.json", "tsconfig.worker.json", "/app/"]
 
 RUN npm cache clean --force
 RUN npm install --force
