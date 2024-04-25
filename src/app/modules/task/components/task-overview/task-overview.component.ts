@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { liveQuery } from 'dexie';
-import { DbService } from 'src/app/services/db.service';
+import { Task } from 'src/app/models/task.model';
+import { TaskService } from 'src/app/services/task.service';
+import { ToastService } from 'src/app/services/toast.service';
 
+const STATUS_COMPLETED = 'completed';
 
 @Component({
   selector: 'app-task-overview',
@@ -10,51 +12,43 @@ import { DbService } from 'src/app/services/db.service';
 })
 export class TaskOverviewComponent implements OnInit {
 
-  /*tasks: Array<any> = [
-    
-  ];*/
+  readonly STATUS_COMPLETED = STATUS_COMPLETED;
 
   isInputValid: boolean = true;
 
   constructor(
-    private db: DbService
-  ) { }
+    private taskService: TaskService
+  ) {
 
-  tasks$ = liveQuery(() => this.listTasks());
-
-  async listTasks() {
-    return await this.db.find('Task')
-      /*.where({
-        todoListId: this.todoList.id,
-      })
-      .toArray();*/
   }
 
+  tasks$: any;
+
   ngOnInit() {
+    this.tasks$ = this.taskService.tasks$
   }
 
   addTask(newTaskBox: any){
     const _newTaskName = newTaskBox.value;
 
     if (_newTaskName && this.isInputValid){
-      /*this.tasks.push({
-        title: _newTaskName
-      });*/
-
-      this.db.add('Task', {
-        title: _newTaskName
-      })
+      let newTask: Task = {
+        name: _newTaskName,
+        isSync: false
+      };
+      
+      this.taskService.localSave('add', newTask)
 
       newTaskBox.value = '';
     }
   }
 
   deleteTask(task: any){
-    this.db.delete('Task', task.id)
+    this.taskService.localSave('delete', task);
   }
 
   updateTask(task: any){
-    this.db.update('Task', task.id, task)
+    this.taskService.localSave('update', task);
   }
 
   validateInput(_newTaskName: string){

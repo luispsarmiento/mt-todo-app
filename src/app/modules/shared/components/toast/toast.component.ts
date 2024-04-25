@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { OVERLAY_DATA, OverlayService } from 'src/app/services/overlay.service';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { OVERLAY_DATA } from 'src/app/services/overlay.service';
 import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
@@ -9,12 +9,16 @@ import { ToastService } from 'src/app/services/toast.service';
 })
 export class ToastComponent implements OnInit {
 
+  @Input()
+  public toastType: 'success' | 'error' = 'success';
+
   constructor(
     @Inject(OVERLAY_DATA) public data: any,
     private toastService: ToastService
   ) { }
 
   ngOnInit() {
+    this.toastType = this.data.toastType;
   }
 
   close() {

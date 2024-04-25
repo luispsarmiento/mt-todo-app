@@ -7,12 +7,19 @@ import { ToastComponent } from '../modules/shared/components/toast/toast.compone
 })
 export class ToastService {
 
+  
+
   public closeEvt: any = new EventEmitter<boolean>();
 
   constructor(private overlayService: OverlayService) { }
 
   success(message: string, closeMessage?: string) {
-    this.overlayService.open(ToastComponent, { message: message, closeMessage: closeMessage });
+    this.overlayService.open(ToastComponent, { message: message, closeMessage: closeMessage, toastType: 'success' });
+    return this;
+  }
+
+  error(message: string) {
+    this.overlayService.open(ToastComponent, { message: message, toastType: 'error' });
     return this;
   }
 
