@@ -3,8 +3,8 @@ import { DbService } from './db.service';
 import { environment } from 'src/environments/environment';
 import { Task } from '../models/task.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, map, throwError } from 'rxjs';
-import { HttpErrorHandler } from '../models/error.model';
+import { catchError, map, throwError } from 'rxjs';
+import { HttpErrorHandler, HttpResponse } from '../models/http.model';
 
 @Injectable({
   providedIn: 'root'
@@ -45,14 +45,20 @@ export class SyncService {
 
     if (typeof tasks !== 'undefined'){
       for(let task of tasks){
-        this.http.post<Task>(`${environment.baseUrl}${this.endpoint}`, task)
+        const data = {
+          name: task.name,
+          schudeledDate: task.schudeledDate,
+          //status: task.status,
+          completedDate: task.completedDate,
+        };
+        this.http.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, data)
                  .pipe(
-                  map((res: Task) => {
-                    let _task = {...task, _id: res.id, isAsync: true};
+                  map((res: HttpResponse<{_id: string}>) => {
+                    let _task = {...task, _id: res.data._id, isSync: true};
   
-                    this.db.update('Task', _task.id, task);
+                    this.db.update('Task', _task.id, _task);
                   }),
-                  catchError(this.handleError));
+                  catchError(this.handleError)).subscribe();
       }
     }
   }

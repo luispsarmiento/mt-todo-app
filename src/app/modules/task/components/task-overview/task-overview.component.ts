@@ -34,6 +34,7 @@ export class TaskOverviewComponent implements OnInit {
     if (_newTaskName && this.isInputValid){
       let newTask: Task = {
         name: _newTaskName,
+        status: 'pending',
         isSync: false
       };
       

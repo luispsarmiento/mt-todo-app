@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DbService } from 'src/app/services/db.service';
 import { liveQuery } from 'dexie';
-import { HttpErrorHandler } from '../models/error.model';
+import { HttpErrorHandler } from '../models/http.model';
 import { SyncService } from './sync.service';
 import { Task } from '../models/task.model';
 
@@ -38,11 +38,11 @@ export class TaskService {
 
   delete(task: Task) {
     this.db.delete('Task', task.id);
-    this.sync.requestSync("sync-tasks");
+    //this.sync.requestSync("sync-tasks");
   }
 
   update(task: Task) {
     this.db.update('Task', task.id, task);
-    this.sync.requestSync("sync-tasks");
+    //this.sync.requestSync("sync-tasks");
   }
 }
