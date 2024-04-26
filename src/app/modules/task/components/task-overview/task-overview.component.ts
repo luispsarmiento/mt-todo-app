@@ -37,18 +37,18 @@ export class TaskOverviewComponent implements OnInit {
         isSync: false
       };
       
-      this.taskService.localSave('add', newTask)
+      this.taskService.add(newTask)
 
       newTaskBox.value = '';
     }
   }
 
   deleteTask(task: any){
-    this.taskService.localSave('delete', task);
+    this.taskService.delete(task);
   }
 
   updateTask(task: any){
-    this.taskService.localSave('update', task);
+    this.taskService.update(task);
   }
 
   validateInput(_newTaskName: string){
