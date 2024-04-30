@@ -10,7 +10,7 @@ const routes: Routes = [
       children: [
         {
           path: '',
-          redirectTo: 'boards',
+          redirectTo: 'my-day',
           pathMatch: 'full'
         },
         /*{
@@ -35,7 +35,7 @@ const routes: Routes = [
           path: 'my-day',
           loadChildren: () => import('../task/task.module').then(m => m.TaskModule)
         },
-        { path: '**', redirectTo: 'my-day', pathMatch: 'full' },
+        /*{ path: '**', redirectTo: 'my-day', pathMatch: 'full' },*/
       ],
     },
   ];
