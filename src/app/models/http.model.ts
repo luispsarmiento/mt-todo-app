@@ -7,3 +7,5 @@ export interface HttpResponse<T>{
     message: string;
     data: T
 }
+
+export type RequestStatus = 'init' | 'loading' | 'success' | 'failed';
