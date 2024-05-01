@@ -1,7 +1,7 @@
 {
   "name": "mt-todo-app",
   "short_name": "mt-todo-app",
-  "theme_color": "#1976d2",
+  "theme_color": "rgb(15 23 42 / 1)",
   "background_color": "#fafafa",
   "display": "standalone",
   "scope": "./",
