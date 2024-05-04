@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    baseUrl: 'https://fuzzy-guide-vprp777grwvfpxp4-3000.app.github.dev/api'
+    baseUrl: 'https://dev-mt-todo-api.jollyground-533f101d.westus3.azurecontainerapps.io/api'
 };

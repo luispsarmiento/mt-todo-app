@@ -11,6 +11,8 @@ export class LoginComponent implements OnInit {
 
   keyPhrase: string = "";
 
+  isBtnDisabled: boolean = false;
+
   constructor(
     private authService: AuthService,
     private router: Router
@@ -20,11 +22,16 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit($evt: any){
+    this.isBtnDisabled = true;
     this.authService.loginByKey($evt.value.keyPhrase).subscribe({
       next: (resp: any) => {
+        console.log(resp);
         this.router.navigate(['/app']);
       },
-      error: (err: any) => console.error(err)
+      error: (err: any) => {
+        this.isBtnDisabled = false;
+        console.error(err)
+      }
     })
   }
 }

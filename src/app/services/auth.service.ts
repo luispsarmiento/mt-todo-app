@@ -4,6 +4,7 @@ import { environment } from 'src/environments/environment';
 import { HttpResponse, HttpErrorHandler } from '../models/http.model';
 import { catchError, Observable, throwError, tap } from 'rxjs';
 import { TokenService } from './token.service';
+import { checkToken } from '../interceptors/token.interceptor';
 
 
 @Injectable({
@@ -19,8 +20,9 @@ export class AuthService {
   ) { }
 
   loginByKey(key: string): Observable<any> {
-    return this.httpClient.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, {apiKey: key})
+    return this.httpClient.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, {apiKey: key}, {context: checkToken()})
                           .pipe(tap((response: any) => {
+                            this.tokenService.saveApiKey(key);
                             this.tokenService.save(response.apiKey);
                           }), catchError(this.handleError));
   }

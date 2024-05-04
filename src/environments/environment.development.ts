@@ -1,4 +1,4 @@
 export const environment = {
     production: false,
-    baseUrl: 'localhost:3000/api'
+    baseUrl: 'https://dev-mt-todo-api.jollyground-533f101d.westus3.azurecontainerapps.io/api'
 };

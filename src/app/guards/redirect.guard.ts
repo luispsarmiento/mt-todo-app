@@ -15,11 +15,10 @@ export class RedirectGuard implements CanActivate {
 
   }
   canActivate() {
-    /*const token = this.tokenService.get();*/
-    if (true){
+    const token = this.tokenService.isValidToken();
+    if (token){
       this.router.navigate(['/app']);
     }
     return true;
-    
   }
 }

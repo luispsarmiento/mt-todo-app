@@ -5,6 +5,7 @@ import { Task } from '../models/task.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, throwError } from 'rxjs';
 import { HttpErrorHandler, HttpResponse } from '../models/http.model';
+import { checkToken } from '../interceptors/token.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,7 @@ export class SyncService {
           //status: task.status,
           completedDate: task.completedDate,
         };
-        this.http.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, data)
+        this.http.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, data, {context: checkToken()})
                  .pipe(
                   map((res: HttpResponse<{_id: string}>) => {
                     let _task = {...task, _id: res.data._id, isSync: true};
