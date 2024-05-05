@@ -48,7 +48,9 @@ export class TokenService {
   }
 
   remove(){
+    removeCookie(COOKIE_KEY);
     removeCookie(COOKIE_KEY_1);
+    removeCookie(COOKIE_KEY_2);
   }
 
   isValidToken(){

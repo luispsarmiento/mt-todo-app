@@ -5,6 +5,7 @@ import { HttpResponse, HttpErrorHandler } from '../models/http.model';
 import { catchError, Observable, throwError, tap } from 'rxjs';
 import { TokenService } from './token.service';
 import { checkToken } from '../interceptors/token.interceptor';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -16,7 +17,8 @@ export class AuthService {
 
   constructor(
     private httpClient: HttpClient,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private router: Router
   ) { }
 
   loginByKey(key: string): Observable<any> {
@@ -25,6 +27,12 @@ export class AuthService {
                             this.tokenService.saveApiKey(key);
                             this.tokenService.save(response.apiKey);
                           }), catchError(this.handleError));
+  }
+
+  logout(){
+    this.tokenService.remove();
+
+    this.router.navigate(['/login']);
   }
 
   private handleError(err: HttpErrorResponse){

@@ -74,36 +74,12 @@ export class TokenInterceptor implements HttpInterceptor {
               }),
               catchError((error: HttpErrorResponse) => {
                 this.refreshTokenInProgress = false;
-  
+                if (error.status === 401){
+                  this.authService.logout();
+                }
                 return throwError(error);
               })
-            );/*.subscribe({
-                  next: () => {
-                    const token = this.tokenService.get();
-                    this.refreshTokenInProgress = false;
-                    this.refreshTokenSubject.next(token);
-  
-                    return this.addToken(request, next);
-                  },
-                  error: (err: any) => {
-                    this.refreshTokenInProgress = false;
-  
-                    return throwError(error);
-                  }
-                });*/
-                /*.switchMap((token: any) => {
-                    //When the call to refreshToken completes we reset the refreshTokenInProgress to false
-                    // for the next time the token needs to be refreshed
-                    this.refreshTokenInProgress = false;
-                    this.refreshTokenSubject.next(token);
-  
-                    return this.addToken(request, next);
-                })
-                .catch((err: any) => {
-                    this.refreshTokenInProgress = false;
-  
-                    return Observable.throw(error);
-                });*/
+            );
         }
       })
     );
