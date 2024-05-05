@@ -7,6 +7,7 @@ import {
   faSquareCheck,
   faBars
 } from '@fortawesome/free-solid-svg-icons';
+import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
@@ -25,7 +26,8 @@ export class LateralMenuComponent implements OnInit {
   isOpen = false;
   constructor(
     private router: Router,
-    private toast: ToastService
+    private toast: ToastService,
+    private loader: LoaderService
   ) { }
 
   ngOnInit() {
@@ -36,6 +38,7 @@ export class LateralMenuComponent implements OnInit {
   }
 
   test(){
-    this.toast.error('Hi!');
+    //this.toast.error('Hi!');
+    //this.loader.show();
   }
 }

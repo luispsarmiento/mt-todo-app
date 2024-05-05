@@ -3,9 +3,10 @@ import { DbService } from './db.service';
 import { environment } from 'src/environments/environment';
 import { Task } from '../models/task.model';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, forkJoin, map, throwError } from 'rxjs';
 import { HttpErrorHandler, HttpResponse } from '../models/http.model';
 import { checkToken } from '../interceptors/token.interceptor';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,9 +16,12 @@ export class SyncService {
 
   readonly endpoint = "/tasks"
 
+  private syncQueue: Array<any> = [];
+
   constructor(
     private db: DbService,
-    private http: HttpClient
+    private http: HttpClient,
+    private loaderService: LoaderService
   ) {
     if ( typeof Worker !== 'undefined' ){
       this.worker = new Worker(new URL('../workers/sync.worker', import.meta.url), { type: 'module' });
@@ -37,7 +41,6 @@ export class SyncService {
   }
 
   private async sync() {
-    console.info("Syncing...");
     let tasks: Array<Task> | undefined = [];
 
     const query = (await this.db.find('Task')) as Array<Task>;
@@ -45,6 +48,9 @@ export class SyncService {
     tasks = query.filter(t => !t.isSync);
 
     if (typeof tasks !== 'undefined'){
+      console.info("Syncing...");
+      this.loaderService.show();
+      this.syncQueue = [];
       for(let task of tasks){
         const data = {
           name: task.name,
@@ -52,15 +58,21 @@ export class SyncService {
           //status: task.status,
           completedDate: task.completedDate,
         };
-        this.http.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, data, {context: checkToken()})
-                 .pipe(
-                  map((res: HttpResponse<{_id: string}>) => {
-                    let _task = {...task, _id: res.data._id, isSync: true};
-  
-                    this.db.update('Task', _task.id, _task);
-                  }),
-                  catchError(this.handleError)).subscribe();
+
+        this.syncQueue.push(this.http.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, data, {context: checkToken()})
+        .pipe(
+          map((res: HttpResponse<{_id: string}>) => {
+            let _task = {...task, _id: res.data._id, isSync: true};
+
+            this.db.update('Task', _task.id, _task);
+          }),
+          catchError(this.handleError)
+        ));
+        
       }
+      await forkJoin(this.syncQueue).toPromise();
+      this.syncQueue = [];
+      this.loaderService.close();
     }
   }
 
