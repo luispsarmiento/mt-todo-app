@@ -1,4 +1,4 @@
-<div class="task-container mx-auto mt-5 max-w-4xl w-full px-4">
+<div class="task-container mx-auto mt-5 w-full">
   <ng-template [ngIf]="!isDone">
     <div class="task bg-white shadow-md rounded-lg px-4 py-3 flex items-center border-r-4 border-yellow-400">
       <button class="edit-button relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="isDone = !isDone; onDone.emit(isDone)">

@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
     this.isBtnDisabled = true;
     this.authService.loginByKey($evt.value.keyPhrase).subscribe({
       next: (resp: any) => {
-        console.log(resp);
         this.router.navigate(['/app']);
       },
       error: (err: any) => {

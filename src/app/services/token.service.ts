@@ -1,5 +1,16 @@
 import { Injectable } from '@angular/core';
 import { getCookie, setCookie, removeCookie } from 'typescript-cookie';
+import CryptoES from 'crypto-es';
+
+const COOKIE_KEY: string = "_mt_todo_app_session_id"; 
+const COOKIE_KEY_1: string = "_mt_todo_app_A";
+const COOKIE_KEY_2: string = "_mt_todo_app_B";
+const bytesToBase64Encode = (bytes: any) => {
+  const binString = String.fromCodePoint(...bytes);
+  return btoa(binString);
+};
+const RandomNumber = () => (Math.floor(Math.random() * 1000) + 1)
+const UniqueStringId = () => bytesToBase64Encode(new TextEncoder().encode(`${RandomNumber()}`))+"-"+bytesToBase64Encode(new TextEncoder().encode(`${Date.now()}`))+"-"+bytesToBase64Encode(new TextEncoder().encode(`${RandomNumber()}`))
 
 @Injectable({
   providedIn: 'root'
@@ -9,27 +20,35 @@ export class TokenService {
   constructor() { }
 
   saveApiKey(apiKey: string){
-    setCookie('mt-todo-app-apiKey', apiKey, {expires: 365, path: '/'});
+    const _key = UniqueStringId();
+
+    const _apiKeyEncrypted = CryptoES.AES.encrypt(apiKey, _key);
+
+    setCookie(COOKIE_KEY, _key, {expires: 14, path: '/', secure: true})
+    setCookie(COOKIE_KEY_2, _apiKeyEncrypted.toString(), {expires: 14, path: '/', secure: true});
   }
 
   getApiKey(){
-    const token = getCookie('mt-todo-app-apiKey');
+    const token = getCookie(COOKIE_KEY_2) ?? "";
+    const _key = getCookie(COOKIE_KEY) ?? "";
 
-    return token;
+    const decrypted = CryptoES.AES.decrypt(token, _key);
+
+    return decrypted.toString(CryptoES.enc.Utf8);
   }
 
   save(token: string){
-    setCookie('mt-todo-app-token', token, {expires: 365, path: '/'});
+    setCookie(COOKIE_KEY_1, token, {expires: 365, path: '/', secure: true});
   }
 
   get(){
-    const token = getCookie('mt-todo-app-token');
+    const token = getCookie(COOKIE_KEY_1);
 
     return token;
   }
 
   remove(){
-    removeCookie('mt-todo-app-token');
+    removeCookie(COOKIE_KEY_1);
   }
 
   isValidToken(){
@@ -52,9 +71,7 @@ export class TokenService {
   }
 
   private decodeExpToken(token: string){
-    console.log(token);
     const _decodeExptoken = atob(token.split('.')[1] ?? "").split('|')[1] ?? "";
-    console.log(_decodeExptoken);
     return _decodeExptoken;
   }
 }
