@@ -93,7 +93,6 @@ export class SyncService {
         errorMessage = `Server returned code: ${err.status}, error message is: ${err.message}`;
     }
     errorHandler.errorMessage = errorMessage;
-    console.error(errorMessage);
     return throwError(errorMessage);
   }
 }
