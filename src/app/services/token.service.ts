@@ -60,7 +60,7 @@ export class TokenService {
     } 
 
     const decodeExpToken = this.decodeExpToken(token);
-    console.log("Decode token", decodeExpToken)
+    
     if(decodeExpToken){
       //const tokenDate = new Date(0);
       //tokenDate.setUTCSeconds(decodeExpToken);

@@ -74,10 +74,7 @@ export class TokenInterceptor implements HttpInterceptor {
               }),
               catchError((error: HttpErrorResponse) => {
                 this.refreshTokenInProgress = false;
-                if (error.status === 401){
-                  console.error("The app is closing session...");
-                  this.authService.logout();
-                }
+                this.authService.logout();
                 return throwError(error);
               })
             );
