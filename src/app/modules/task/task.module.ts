@@ -12,7 +12,6 @@ import { TaskComponent } from './components/task/task.component';
     CommonModule,
     TaskRoutingModule,
     SharedModule,
-    LayoutModule,
     FontAwesomeModule,
   ],
   declarations: [

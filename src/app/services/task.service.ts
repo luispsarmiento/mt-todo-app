@@ -14,7 +14,7 @@ export class TaskService {
     private db: DbService,
     private sync: SyncService
   ) {
-
+    
   }
 
   tasks$ = liveQuery(() => this.listTasks());
@@ -44,5 +44,9 @@ export class TaskService {
   update(task: Task) {
     this.db.update('Task', task.id, task);
     //this.sync.requestSync("sync-tasks");
+  }
+
+  get(){
+    this.sync.syncGet().subscribe();
   }
 }

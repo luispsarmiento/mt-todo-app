@@ -3,7 +3,7 @@ import { DbService } from './db.service';
 import { environment } from 'src/environments/environment';
 import { Task } from '../models/task.model';
 import { HttpClient } from '@angular/common/http';
-import { catchError, forkJoin, map } from 'rxjs';
+import { Observable, catchError, forkJoin, map, tap } from 'rxjs';
 import { HttpResponse } from '../models/http.model';
 import { checkToken } from '../interceptors/token.interceptor';
 import { LoaderService } from './loader.service';
@@ -80,4 +80,25 @@ export class SyncService extends HttpService {
     }
   }
 
+  public syncGet(): Observable<Task[]> {
+    return this.http.get<Task[]>(`${environment.baseUrl}${this.endpoint}`)
+    .pipe(
+      tap(async (res: Task[]) => {
+        const tasks = await this.db.find('Task');
+        for(let _task of res){
+          const taskIndex = tasks.findIndex(_e => _e._id != undefined && _e._id == _task._id);
+          if(taskIndex >= 0){
+            const _new = {...tasks[taskIndex], ..._task, isSync: true};
+            console.log('actualizando a', _new)
+            this.db.update('Task', tasks[taskIndex].id, _new);
+          } else {
+            const _new = {..._task, isSync: true};
+            console.log('agregando a', _new)
+            this.db.add('Task', _task);
+          }
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
 }

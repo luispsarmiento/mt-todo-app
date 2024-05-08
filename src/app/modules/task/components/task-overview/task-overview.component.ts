@@ -19,12 +19,13 @@ export class TaskOverviewComponent implements OnInit {
   constructor(
     private taskService: TaskService
   ) {
-
+    
   }
 
   tasks$: any;
 
   ngOnInit() {
+    this.taskService.get();
     this.tasks$ = this.taskService.tasks$
   }
 
