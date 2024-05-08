@@ -5,8 +5,12 @@ import {
   faCalendar,
   faCircleExclamation,
   faSquareCheck,
-  faBars
+  faBars,
+  faAngleUp,
+  faAngleDown,
+  faSignOut
 } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/services/auth.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
 
@@ -22,12 +26,17 @@ export class LateralMenuComponent implements OnInit {
   faCircleExclamation = faCircleExclamation;
   faSquareCheck = faSquareCheck;
   faBars = faBars;
+  faAngleUp = faAngleUp;
+  faAngleDown = faAngleDown;
+  faSignOut = faSignOut;
 
   isOpen = false;
+  isOpenUOverlay = false;
   constructor(
     private router: Router,
     private toast: ToastService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -40,5 +49,9 @@ export class LateralMenuComponent implements OnInit {
   test(){
     //this.toast.error('Hi!');
     //this.loader.show();
+  }
+
+  logout(){
+    this.authService.logout();
   }
 }
