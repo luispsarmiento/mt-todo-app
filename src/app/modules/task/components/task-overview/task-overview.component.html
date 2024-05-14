@@ -16,5 +16,5 @@
     [title]="task.name"
     [isDone]="task.status === STATUS_COMPLETED ? true : false" 
     (onDelete)="deleteTask(task)"
-    (onDone)="task.status = $event ? STATUS_COMPLETED : ''; updateTask(task)"></app-task>
+    (onDone)="task.status = $event ? STATUS_COMPLETED : STATUS_PENDING; updateTask(task)"></app-task>
 </div>

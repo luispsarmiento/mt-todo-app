@@ -4,6 +4,7 @@ import { TaskService } from 'src/app/services/task.service';
 import { ToastService } from 'src/app/services/toast.service';
 
 const STATUS_COMPLETED = 'completed';
+const STATUS_PENDING = 'pending'
 
 @Component({
   selector: 'app-task-overview',
@@ -13,6 +14,7 @@ const STATUS_COMPLETED = 'completed';
 export class TaskOverviewComponent implements OnInit {
 
   readonly STATUS_COMPLETED = STATUS_COMPLETED;
+  readonly STATUS_PENDING = STATUS_PENDING;
 
   isInputValid: boolean = true;
 
@@ -36,7 +38,8 @@ export class TaskOverviewComponent implements OnInit {
       let newTask: Task = {
         name: _newTaskName,
         status: 'pending',
-        isSync: false
+        isSync: false,
+        isDeleted: false
       };
       
       this.taskService.add(newTask)
@@ -50,6 +53,11 @@ export class TaskOverviewComponent implements OnInit {
   }
 
   updateTask(task: any){
+    if(task.status == STATUS_COMPLETED){
+      task.completedDate = (new Date()).toISOString().replace("T", ' ').substring(0, 19);
+    } else if (task.status == STATUS_PENDING){
+      task.completedDate = "1970-01-01 00:00:00";
+    }
     this.taskService.update(task);
   }
 

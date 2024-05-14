@@ -20,7 +20,7 @@ export class TaskService {
   tasks$ = liveQuery(() => this.listTasks());
 
   async listTasks() {
-    return await this.find();
+    return (await this.find()).filter(e => !e.isDeleted);
       /*.where({
         todoListId: this.todoList.id,
       })
@@ -37,13 +37,16 @@ export class TaskService {
   }
 
   delete(task: Task) {
-    this.db.delete('Task', task.id);
-    //this.sync.requestSync("sync-tasks");
+    task.isDeleted = true;
+    task.isSync = false;
+    this.db.update('Task', task.id, task);
+    this.sync.requestSync("sync-tasks");
   }
 
   update(task: Task) {
+    task.isSync = false;
     this.db.update('Task', task.id, task);
-    //this.sync.requestSync("sync-tasks");
+    this.sync.requestSync("sync-tasks");
   }
 
   get(){

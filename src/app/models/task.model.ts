@@ -6,4 +6,5 @@ export interface Task{
     status?: 'pending' | 'scheduled' | 'completed' ;
     completedDate?: Date;
     isSync?: boolean;
+    isDeleted?: boolean;
 }

@@ -54,23 +54,42 @@ export class SyncService extends HttpService {
       this.loaderService.show();
       this.syncQueue = [];
       for(let task of tasks){
-        const data = {
-          name: task.name,
-          schudeledDate: task.schudeledDate,
-          //status: task.status,
-          completedDate: task.completedDate,
-        };
-
-        this.syncQueue.push(this.http.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, data, {context: checkToken()})
-        .pipe(
-          map((res: HttpResponse<{_id: string}>) => {
-            let _task = {...task, _id: res.data._id, isSync: true};
-
-            this.db.update('Task', _task.id, _task);
-          }),
-          catchError(this.handleError)
-        ));
-        
+        let req;
+        if (task._id && !task.isDeleted){
+          const data = {
+            name: task.name,
+            schudeledDate: task.schudeledDate,
+            status: task.status,
+            completedDate: task.completedDate,
+          };
+          req = this.http.patch(`${environment.baseUrl}${this.endpoint}/${task._id}`, data)
+                    .pipe(catchError(this.handleError));
+        } else if (task._id && task.isDeleted){
+          req = this.http.delete<HttpResponse<any>>(`${environment.baseUrl}${this.endpoint}/${task._id}`)
+                    .pipe(
+                      map((res: HttpResponse<any>) => {
+                        this.db.delete('Task', task.id);
+                      }),
+                      catchError(this.handleError)
+                    )
+        } else {
+          const data = {
+            name: task.name,
+            schudeledDate: task.schudeledDate,
+            //status: task.status,
+            completedDate: task.completedDate,
+          };
+          req = this.http.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, data, {context: checkToken()})
+                    .pipe(
+                      map((res: HttpResponse<{_id: string}>) => {
+                        let _task = {...task, _id: res.data._id, isSync: true};
+            
+                        this.db.update('Task', _task.id, _task);
+                      }),
+                      catchError(this.handleError)
+                    );
+        }
+        this.syncQueue.push(req);
       }
 
       await forkJoin(this.syncQueue).toPromise().catch(err => {});
@@ -88,11 +107,11 @@ export class SyncService extends HttpService {
         for(let _task of res){
           const taskIndex = tasks.findIndex(_e => _e._id != undefined && _e._id == _task._id);
           if(taskIndex >= 0){
-            const _new = {...tasks[taskIndex], ..._task, isSync: true};
+            const _new = {...tasks[taskIndex], ..._task, isSync: true, isDeleted: false};
             console.log('actualizando a', _new)
             this.db.update('Task', tasks[taskIndex].id, _new);
           } else {
-            const _new = {..._task, isSync: true};
+            const _new = {..._task, isSync: true, isDeleted: false};
             console.log('agregando a', _new)
             this.db.add('Task', _task);
           }
