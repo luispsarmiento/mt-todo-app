@@ -16,5 +16,18 @@
     [title]="task.name"
     [isDone]="task.status === STATUS_COMPLETED ? true : false" 
     (onDelete)="deleteTask(task)"
-    (onDone)="task.status = $event ? STATUS_COMPLETED : STATUS_PENDING; updateTask(task)"></app-task>
-</div>
+    (onDone)="task.status = $event ? STATUS_COMPLETED : STATUS_PENDING; updateTaskStatus(task)"
+    (onTaskClick)="isSidebarOpen = !isSidebarOpen; selectTask(task)"
+    ></app-task>
+  
+  </div>
+
+<ng-template
+  [ngIf]="isSidebarOpen"
+>
+  <app-sidebar 
+    (onClose)="isSidebarOpen = !isSidebarOpen"
+    [isOpen]="isSidebarOpen"
+    [taskDetail]="taskSelected"
+    (onChangeTaskDetail)="updateTask($event)"></app-sidebar>
+</ng-template> 

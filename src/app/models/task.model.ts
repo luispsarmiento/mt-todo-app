@@ -7,4 +7,5 @@ export interface Task{
     completedDate?: Date;
     isSync?: boolean;
     isDeleted?: boolean;
+    notes?: string;
 }

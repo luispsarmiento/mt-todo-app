@@ -24,6 +24,9 @@ export class TaskComponent implements OnInit {
   @Output()
   onDelete = new EventEmitter();
 
+  @Output()
+  onTaskClick = new EventEmitter();
+
   faSquare = faSquare;
   faSquareCheck = faSquareCheck;
   icon = faSquare;
