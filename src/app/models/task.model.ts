@@ -2,9 +2,10 @@ export interface Task{
     id?: any;
     _id?: any;
     name: string;
-    schudeledDate?: Date;
+    priority: number;
+    schudeledDate?: string;
     status?: 'pending' | 'scheduled' | 'completed' ;
-    completedDate?: Date;
+    completedDate?: string;
     isSync?: boolean;
     isDeleted?: boolean;
     notes?: string;

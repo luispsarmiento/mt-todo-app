@@ -38,6 +38,7 @@ export class TaskOverviewComponent implements OnInit {
     if (_newTaskName && this.isInputValid){
       let newTask: Task = {
         name: _newTaskName,
+        priority: 0,
         status: 'pending',
         isSync: false,
         isDeleted: false
@@ -53,7 +54,7 @@ export class TaskOverviewComponent implements OnInit {
     this.taskService.delete(task);
   }
 
-  updateTaskStatus(task: any){
+  updateTaskStatus(task: Task){
     if(task.status == STATUS_COMPLETED){
       task.completedDate = (new Date()).toISOString().replace("T", ' ').substring(0, 19);
     } else if (task.status == STATUS_PENDING){

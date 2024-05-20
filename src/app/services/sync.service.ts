@@ -58,9 +58,11 @@ export class SyncService extends HttpService {
         if (task._id && !task.isDeleted){
           const data = {
             name: task.name,
+            priority: task.priority,
             schudeledDate: task.schudeledDate,
             status: task.status,
             completedDate: task.completedDate?.toString() != "1970-01-01T00:00:00.000Z" ? task.completedDate : "1970-01-01 00:00:00",
+            notes: task.notes ?? ""
           };
           req = this.http.patch(`${environment.baseUrl}${this.endpoint}/${task._id}`, data)
                     .pipe(catchError(this.handleError));
@@ -75,6 +77,7 @@ export class SyncService extends HttpService {
         } else {
           const data = {
             name: task.name,
+            priority: task.priority,
             schudeledDate: task.schudeledDate,
             //status: task.status,
             completedDate: task.completedDate,
@@ -107,17 +110,23 @@ export class SyncService extends HttpService {
         for(let _task of res){
           const taskIndex = tasks.findIndex(_e => _e._id != undefined && _e._id == _task._id);
           if(taskIndex >= 0){
-            const _new = {...tasks[taskIndex], ..._task, isSync: true, isDeleted: false};
-            console.log('actualizando a', _new)
+            let _new = {...tasks[taskIndex], ..._task, isSync: true, isDeleted: false};
+            _new = this.setPriority_Tmp(_new);
             this.db.update('Task', tasks[taskIndex].id, _new);
           } else {
-            const _new = {..._task, isSync: true, isDeleted: false};
-            console.log('agregando a', _new)
-            this.db.add('Task', _task);
+            let _new = {..._task, isSync: true, isDeleted: false} as Task;
+            _new = this.setPriority_Tmp(_new);
+            this.db.add('Task', _new);
           }
         }
       }),
       catchError(this.handleError)
     );
+  }
+
+  private setPriority_Tmp(task: Task){
+    task.priority = task.priority ?? 0;
+
+    return task;
   }
 }

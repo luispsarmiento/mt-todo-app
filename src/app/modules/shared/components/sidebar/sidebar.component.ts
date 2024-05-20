@@ -15,6 +15,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   _taskDetail!: Task;
   @Input() 
   set taskDetail(v: Task){
+    console.log(v);
     this._taskDetail = v;
     this.textareaContent = this._taskDetail.notes ?? "";
   }
