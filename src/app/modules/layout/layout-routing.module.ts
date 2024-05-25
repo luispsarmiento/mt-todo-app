@@ -8,11 +8,11 @@ const routes: Routes = [
       path: '',
       component: LayoutComponent,
       children: [
-        /*{
+        {
           path: '',
-          redirectTo: 'my-day',
+          redirectTo: 'task',
           pathMatch: 'full'
-        },*/
+        },
         /*{
           path: 'boards',
           canActivate: [ AuthGuard ],
