@@ -17,10 +17,32 @@ export class TaskService {
     
   }
 
-  tasks$ = liveQuery(() => this.listTasks());
+  //tasks$ = liveQuery(() => this.listTasks());
 
   async listTasks() {
     return (await this.find()).filter(e => !e.isDeleted);
+      /*.where({
+        todoListId: this.todoList.id,
+      })
+      .toArray();*/
+  }
+
+  async listBySchudeledDate(fromDate: string, toDate: string) {
+    return (await this.find()).filter((e: Task) => {
+      if (!e.schudeledDate){
+        return false;
+      }
+
+      const sd = new Date(e.schudeledDate);
+      const _fromDate = new Date(fromDate);
+      const _toDate = new Date(toDate);
+
+      if (!e.isDeleted && _fromDate.getTime() >= sd.getTime() && sd.getTime() <= _toDate.getTime()){
+        return true;
+      }
+
+      return false;
+    });
       /*.where({
         todoListId: this.todoList.id,
       })

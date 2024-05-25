@@ -17,7 +17,7 @@
     <div class="border-t border-slate-700"></div>
     <!-- Sidebar content here -->
     <ul class="py-4">
-      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer" (click)="navigateTo('my-day')">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer" (click)="navigateTo('app/task/my-day')">
         <fa-icon class="text-yellow-400 mr-4" [icon]="faSun"></fa-icon><!-- Icon for "My Day" choice -->
         Mi día
       </li>
@@ -29,7 +29,7 @@
         <fa-icon class="text-red-400 mr-4" [icon]="faCircleExclamation"></fa-icon><!-- Icon for "Importante" choice -->
         Importante
       </li>
-      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer" (click)="navigateTo('app/task/all')">
         <fa-icon class="text-green-400 mr-4" [icon]="faSquareCheck"></fa-icon><!-- Icon for "Tasks" choice -->
         Tareas
       </li>
@@ -81,7 +81,7 @@
     <div class="border-t border-slate-700"></div>
     <!-- Sidebar content here -->
     <ul class="py-4">
-      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer" (click)="navigateTo('my-day')">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer" (click)="navigateTo('app/task/my-day')">
         <fa-icon class="text-yellow-400 mr-4" [icon]="faSun"></fa-icon><!-- Icon for "My Day" choice -->
         Mi día
       </li>
@@ -93,7 +93,7 @@
         <fa-icon class="text-red-400 mr-4" [icon]="faCircleExclamation"></fa-icon><!-- Icon for "Importante" choice -->
         Importante
       </li>
-      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
+      <li class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer" (click)="navigateTo('app/task/all')">
         <fa-icon class="text-green-400 mr-4" [icon]="faSquareCheck"></fa-icon><!-- Icon for "Tasks" choice -->
         Tareas
       </li>

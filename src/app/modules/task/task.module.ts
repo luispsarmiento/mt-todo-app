@@ -7,6 +7,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TaskComponent } from './components/task/task.component';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { AllComponent } from './pages/all/all.component';
+import { MyDayComponent } from './pages/my-day/my-day.component';
 
 @NgModule({
   imports: [
@@ -19,7 +21,9 @@ import { CdkAccordionModule } from '@angular/cdk/accordion';
   ],
   declarations: [
     TaskOverviewComponent,
-    TaskComponent
+    TaskComponent,
+    AllComponent,
+    MyDayComponent
   ]
 })
 export class TaskModule { }

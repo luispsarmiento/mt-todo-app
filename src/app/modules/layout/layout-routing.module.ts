@@ -8,11 +8,11 @@ const routes: Routes = [
       path: '',
       component: LayoutComponent,
       children: [
-        {
+        /*{
           path: '',
           redirectTo: 'my-day',
           pathMatch: 'full'
-        },
+        },*/
         /*{
           path: 'boards',
           canActivate: [ AuthGuard ],
@@ -32,7 +32,7 @@ const routes: Routes = [
             import('../users/users.module').then((m) => m.UsersModule),
         },*/
         {
-          path: 'my-day',
+          path: 'task',
           loadChildren: () => import('../task/task.module').then(m => m.TaskModule)
         },
         /*{ path: '**', redirectTo: 'my-day', pathMatch: 'full' },*/

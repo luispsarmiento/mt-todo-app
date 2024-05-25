@@ -1,9 +1,12 @@
-import { Component, OnInit, } from '@angular/core';
+import { Component, Input, OnInit, } from '@angular/core';
+import { liveQuery } from 'dexie';
 import { Task } from 'src/app/models/task.model';
 import { TaskService } from 'src/app/services/task.service';
 
 const STATUS_COMPLETED = 'completed';
 const STATUS_PENDING = 'pending'
+
+export type TaskOverviewFilter = 'MY_DAY' | 'ALL'
 
 @Component({
   selector: 'app-task-overview',
@@ -12,12 +15,18 @@ const STATUS_PENDING = 'pending'
 })
 export class TaskOverviewComponent implements OnInit {
 
+  @Input()
+  filter: TaskOverviewFilter = 'ALL';
+
   readonly STATUS_COMPLETED = STATUS_COMPLETED;
   readonly STATUS_PENDING = STATUS_PENDING;
 
   isInputValid: boolean = true;
   isSidebarOpen: boolean = false;
   taskSelected!: Task
+
+  private myDayFilterFromDate!: string;
+  private myDayFilterToDate!: string;
 
   constructor(
     private taskService: TaskService
@@ -28,8 +37,17 @@ export class TaskOverviewComponent implements OnInit {
   tasks$: any;
 
   ngOnInit() {
+    this.setMyDayFilterDate();
     this.taskService.get();
-    this.tasks$ = this.taskService.tasks$
+    console.log(new Date())
+    switch(this.filter){
+      case 'ALL':
+        this.tasks$ = liveQuery(() => this.taskService.listTasks());
+        break;
+      case 'MY_DAY':
+        this.tasks$ = liveQuery(() => this.taskService.listBySchudeledDate(this.myDayFilterFromDate, this.myDayFilterToDate));
+        break;
+    }
   }
 
   addTask(newTaskBox: any){
@@ -78,5 +96,11 @@ export class TaskOverviewComponent implements OnInit {
 
   selectTask(task: Task){
     this.taskSelected = task;
+  }
+
+  private setMyDayFilterDate(){
+    let now = new Date();
+    this.myDayFilterFromDate = new Date(now.getFullYear(), now.getMonth(), now.getDay()).toISOString();
+    this.myDayFilterFromDate = new Date(now.getFullYear(), now.getMonth(), now.getDay(), 23, 59, 59).toISOString();
   }
 }
