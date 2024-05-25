@@ -29,15 +29,15 @@ export class TaskService {
 
   async listBySchudeledDate(fromDate: string, toDate: string) {
     return (await this.find()).filter((e: Task) => {
-      if (!e.schudeledDate){
+      if (!e.scheduledDate){
         return false;
       }
 
-      const sd = new Date(e.schudeledDate);
+      const sd = new Date(e.scheduledDate);
       const _fromDate = new Date(fromDate);
       const _toDate = new Date(toDate);
 
-      if (!e.isDeleted && _fromDate.getTime() >= sd.getTime() && sd.getTime() <= _toDate.getTime()){
+      if (!e.isDeleted && sd.getTime() != 0 && _fromDate.getTime() <= sd.getTime() && sd.getTime() <= _toDate.getTime()){
         return true;
       }
 

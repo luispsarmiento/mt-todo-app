@@ -77,6 +77,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.onChangeTaskDetail.emit(this._taskDetail);
   }
 
+  addToMyDay(){
+    this._taskDetail.scheduledDate = new Date().toISOString();
+    this.onChangeTaskDetail.emit(this._taskDetail);
+  }
+
   private saveTaskName(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     this._taskDetail.name = inputElement.value;

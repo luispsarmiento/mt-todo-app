@@ -3,7 +3,7 @@ export interface Task{
     _id?: any;
     name: string;
     priority: number;
-    schudeledDate?: string;
+    scheduledDate?: string;
     status?: 'pending' | 'scheduled' | 'completed' ;
     completedDate?: string;
     isSync?: boolean;

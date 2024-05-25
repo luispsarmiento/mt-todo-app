@@ -59,7 +59,7 @@ export class SyncService extends HttpService {
           const data = {
             name: task.name,
             priority: task.priority,
-            schudeledDate: task.schudeledDate,
+            scheduledDate: task.scheduledDate,
             status: task.status,
             completedDate: task.completedDate?.toString() != "1970-01-01T00:00:00.000Z" ? task.completedDate : "1970-01-01 00:00:00",
             notes: task.notes ?? ""
@@ -78,7 +78,7 @@ export class SyncService extends HttpService {
           const data = {
             name: task.name,
             priority: task.priority,
-            schudeledDate: task.schudeledDate,
+            scheduledDate: task.scheduledDate,
             //status: task.status,
             completedDate: task.completedDate,
           };
