@@ -44,6 +44,7 @@ export class LateralMenuComponent implements OnInit {
 
   navigateTo(route: string) {
     this.router.navigate([route]);
+    this.isOpen = !this.isOpen;
   }
 
   test(){
