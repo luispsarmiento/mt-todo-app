@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Task } from 'src/app/models/task.model';
+import { faClose } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -7,6 +8,8 @@ import { Task } from 'src/app/models/task.model';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit, OnDestroy {
+
+  faClose = faClose;
 
   @ViewChild('mtOverlay') mtOverlay!: ElementRef;
 
