@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit, } from '@angular/core';
 import { liveQuery } from 'dexie';
 import { Task } from 'src/app/models/task.model';
@@ -11,12 +12,16 @@ export type TaskOverviewFilter = 'MY_DAY' | 'ALL'
 @Component({
   selector: 'app-task-overview',
   templateUrl: './task-overview.component.html',
-  styleUrls: []
+  styleUrls: [],
+  providers: [DatePipe]
 })
 export class TaskOverviewComponent implements OnInit, OnDestroy {
 
   @Input()
   filter: TaskOverviewFilter = 'ALL';
+
+  @Input()
+  title!: string;
 
   readonly STATUS_COMPLETED = STATUS_COMPLETED;
   readonly STATUS_PENDING = STATUS_PENDING;
@@ -24,12 +29,14 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
   isInputValid: boolean = true;
   isSidebarOpen: boolean = false;
   taskSelected!: Task
+  currentDate!: string | null;
 
   private myDayFilterFromDate!: string;
   private myDayFilterToDate!: string;
 
   constructor(
-    private taskService: TaskService
+    private taskService: TaskService,
+    private datePipe: DatePipe
   ) {
     
   }
@@ -50,6 +57,7 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
         this.tasks$ = liveQuery(() => this.taskService.listBySchudeledDate(this.myDayFilterFromDate, this.myDayFilterToDate));
         break;
     }
+    this.currentDate = this.datePipe.transform(new Date(), 'fullDate');
   }
 
   addTask(newTaskBox: any){
@@ -102,7 +110,7 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
 
   private setMyDayFilterDate(){
     let now = new Date();
-    this.myDayFilterFromDate = new Date(now.getFullYear(), now.getMonth(), now.getUTCDate()).toISOString();
-    this.myDayFilterToDate = new Date(now.getFullYear(), now.getMonth(), now.getUTCDate(), 23, 59, 59).toISOString();
+    this.myDayFilterFromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+    this.myDayFilterToDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).toISOString();
   }
 }
