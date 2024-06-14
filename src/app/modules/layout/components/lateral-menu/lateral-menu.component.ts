@@ -44,7 +44,6 @@ export class LateralMenuComponent implements OnInit {
 
   navigateTo(route: string) {
     this.router.navigate([route]);
-    this.isOpen = !this.isOpen;
   }
 
   test(){
@@ -54,5 +53,10 @@ export class LateralMenuComponent implements OnInit {
 
   logout(){
     this.authService.logout();
+  }
+
+  lateralNavigateTo(route: string){
+    this.navigateTo(route);
+    this.isOpen = !this.isOpen;
   }
 }
