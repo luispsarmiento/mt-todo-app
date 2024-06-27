@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { Task } from 'src/app/models/task.model';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faSun } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,6 +10,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 export class SidebarComponent implements OnInit, OnDestroy {
 
   faClose = faClose;
+  faSun = faSun;
 
   @ViewChild('mtOverlay') mtOverlay!: ElementRef;
 
@@ -38,6 +39,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   textareaContent = "";
 
+  isAddedToMyDay: boolean = false;
+
+  private myDayFilterFromDate!: string;
+  private myDayFilterToDate!: string;
+
   constructor(private eRef: ElementRef) {}
 
   ngOnDestroy(): void {
@@ -50,6 +56,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.isSaveTaskNameByBlur = false;
       clearTimeout(this.wait);
     });
+    this.setMyDayFilterDate();
+    //if the scheduledDate is equel to now, so the task is added to "My Day"
+    if (this._taskDetail.scheduledDate != null || this._taskDetail.scheduledDate != undefined){
+      const sd = new Date(this._taskDetail.scheduledDate);
+      const _fromDate = new Date(this.myDayFilterFromDate);
+      const _toDate = new Date(this.myDayFilterToDate);
+
+      this.isAddedToMyDay = _fromDate.getTime() <= sd.getTime() && sd.getTime() <= _toDate.getTime();
+    }
   }
 
   onBackdropClick(event: MouseEvent) {
@@ -80,8 +95,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.onChangeTaskDetail.emit(this._taskDetail);
   }
 
-  addToMyDay(){
-    this._taskDetail.scheduledDate = new Date().toISOString();
+  addToMyDay(isAdded: boolean){
+    this._taskDetail.scheduledDate = isAdded ? new Date().toISOString() : null;
+    this.isAddedToMyDay = !this.isAddedToMyDay
     this.onChangeTaskDetail.emit(this._taskDetail);
   }
 
@@ -92,5 +108,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.wait = setTimeout(() => {
       this.onChangeTaskDetail.emit(this._taskDetail);
     }, 500);
+  }
+
+  private setMyDayFilterDate(){
+    let now = new Date();
+    this.myDayFilterFromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+    this.myDayFilterToDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).toISOString();
   }
 }

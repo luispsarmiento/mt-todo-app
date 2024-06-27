@@ -71,6 +71,10 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
         isSync: false,
         isDeleted: false
       };
+
+      if (this.filter == 'MY_DAY'){
+        newTask.scheduledDate = new Date().toISOString()
+      }
       
       this.taskService.add(newTask)
 
