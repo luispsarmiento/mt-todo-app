@@ -64,10 +64,10 @@ export class SyncService extends HttpService {
             completedDate: task.completedDate?.toString() != "1970-01-01T00:00:00.000Z" ? task.completedDate : "1970-01-01 00:00:00",
             notes: task.notes ?? ""
           };
-          req = this.http.patch(`${environment.baseUrl}${this.endpoint}/${task._id}`, data)
+          req = this.http.patch(`${environment.baseUrl}${this.endpoint}/${task._id}`, data, {context: checkToken()})
                     .pipe(catchError(this.handleError));
         } else if (task._id && task.isDeleted){
-          req = this.http.delete<HttpResponse<any>>(`${environment.baseUrl}${this.endpoint}/${task._id}`)
+          req = this.http.delete<HttpResponse<any>>(`${environment.baseUrl}${this.endpoint}/${task._id}`, {context: checkToken()})
                     .pipe(
                       map((res: HttpResponse<any>) => {
                         this.db.delete('Task', task.id);
@@ -103,7 +103,7 @@ export class SyncService extends HttpService {
   }
 
   public syncGet(): Observable<Task[]> {
-    return this.http.get<Task[]>(`${environment.baseUrl}${this.endpoint}`)
+    return this.http.get<Task[]>(`${environment.baseUrl}${this.endpoint}`, {context: checkToken()})
     .pipe(
       tap(async (res: Task[]) => {
         const tasks = await this.db.find('Task');

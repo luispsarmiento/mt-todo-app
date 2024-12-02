@@ -10,7 +10,8 @@ import { LoaderService } from 'src/app/services/loader.service';
 })
 export class LoginComponent implements OnInit {
 
-  keyPhrase: string = "";
+  email: string = "";
+  password: string = "";
 
   isBtnDisabled: boolean = false;
 
@@ -27,7 +28,7 @@ export class LoginComponent implements OnInit {
   onSubmit($evt: any){
     this.loaderService.show();
     this.isBtnDisabled = true;
-    this.authService.loginByKey($evt.value.keyPhrase).subscribe({
+    this.authService.login($evt.value.email, $evt.value.password).subscribe({
       next: (resp: any) => {
         this.loaderService.close();
         this.router.navigate(['/app']);

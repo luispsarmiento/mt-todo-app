@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { getCookie, setCookie, removeCookie } from 'typescript-cookie';
 import CryptoES from 'crypto-es';
+import { JwtPayload, jwtDecode } from 'jwt-decode';
 
 const COOKIE_KEY: string = "_mt_todo_app_session_id"; 
 const COOKIE_KEY_1: string = "_mt_todo_app_A";
@@ -19,7 +20,7 @@ export class TokenService {
 
   constructor() { }
 
-  saveApiKey(apiKey: string){
+  saveRefreshToken(apiKey: string){
     const _key = UniqueStringId();
 
     const _apiKeyEncrypted = CryptoES.AES.encrypt(apiKey, _key);
@@ -28,7 +29,7 @@ export class TokenService {
     setCookie(COOKIE_KEY_2, _apiKeyEncrypted.toString(), {expires: 14, path: '/', secure: true});
   }
 
-  getApiKey(){
+  getRefreshToken(){
     const token = getCookie(COOKIE_KEY_2) ?? "";
     const _key = getCookie(COOKIE_KEY) ?? "";
 
@@ -54,17 +55,16 @@ export class TokenService {
   }
 
   isValidToken(){
-    const token = this.getApiKey();
+    const token = this.get();
     if (!token) {
       return false;
-    } 
+    }
 
     const decodeExpToken = this.decodeExpToken(token);
-    
+
     if(decodeExpToken){
-      //const tokenDate = new Date(0);
-      //tokenDate.setUTCSeconds(decodeExpToken);
-      const tokenDate = new Date(decodeExpToken);
+      const tokenDate = new Date(0);
+      tokenDate.setUTCSeconds(decodeExpToken);
       const today = new Date();
       return tokenDate.getTime() > today.getTime();
     }
@@ -72,8 +72,30 @@ export class TokenService {
     return false;
   }
 
+  isValidRefreshToken(){
+    const token = this.getRefreshToken();
+    if (!token) {
+      return false;
+    }
+
+    const decodeExpToken = this.decodeExpToken(token);
+
+    if(decodeExpToken){
+      const tokenDate = new Date(0);
+      tokenDate.setUTCSeconds(decodeExpToken);
+      const today = new Date();
+      return tokenDate.getTime() > today.getTime();
+    }
+
+    return true;
+  }
+
   private decodeExpToken(token: string){
-    const _decodeExptoken = atob(token.split('.')[1] ?? "").split('|')[1] ?? "";
-    return _decodeExptoken;
+    let exp: number = 0;
+    const _decodeExptoken = jwtDecode<JwtPayload>(token);
+    if (_decodeExptoken && _decodeExptoken?.exp){
+      return _decodeExptoken.exp;
+    }
+    return exp;
   }
 }

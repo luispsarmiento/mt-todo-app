@@ -63,8 +63,8 @@ export class TokenInterceptor implements HttpInterceptor {
             this.refreshTokenSubject.next(null);
   
             // Call auth.refreshAccessToken(this is an Observable that will be returned)
-            const apiKey = this.tokenService.getApiKey() || "";
-            return this.authService.loginByKey(apiKey).pipe(
+            const rt = this.tokenService.getRefreshToken() || "";
+            return this.authService.refreshToken(rt).pipe(
               switchMap((response: any) =>{
                 const token = this.tokenService.get();
                 this.refreshTokenInProgress = false;
@@ -95,7 +95,7 @@ export class TokenInterceptor implements HttpInterceptor {
     const token = this.tokenService.get();
     if (token){
       const authRequest = request.clone({
-        headers: request.headers.set('x-api-key', `${token}`)
+        headers: request.headers.set('Authorization', `Bearer ${token}`)
       });
 
       return next.handle(authRequest);
