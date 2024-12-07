@@ -25,10 +25,10 @@ export class AuthService extends HttpService {
   }
 
   refreshToken(key: string): Observable<any> {
-    return this.httpClient.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}/refresh-token`, {apiKey: key}, {context: checkToken()})
+    return this.httpClient.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}/refresh-token`, {refreshToken: key}, {context: checkToken()})
                           .pipe(tap((response: any) => {
-                            this.tokenService.save(response.accessToken);
-                            this.tokenService.saveRefreshToken(response.refreshToken);
+                            this.tokenService.save(response.access_token);
+                            this.tokenService.saveRefreshToken(response.refresh_token);
                           }), catchError(this.handleError));
   }
 
