@@ -1,6 +1,6 @@
 // db.ts
 import Dexie, { Table } from 'dexie';
-
+import { Quiz, QuizAttempt, QuizQuestion } from '../modules/quiz/pages/quiz/quiz.component';
 export interface TodoList {
   id?: number;
   title: string;
@@ -14,6 +14,8 @@ export interface TaskItem {
 const dbName = 'mt-todo-db';
 export class AppDB extends Dexie {
   Task!: Table<TaskItem, number>;
+  Quiz!: Table<Quiz, number>;
+  QuizAttempt!: Table<QuizAttempt, number, QuizAttempt>;
   //todoLists!: Table<TodoList, number>;
 
   constructor() {
@@ -21,6 +23,8 @@ export class AppDB extends Dexie {
     this.version(3).stores({
       //todoLists: '++id',
       Task: '++id',
+      Quiz: '++id',
+      QuizAttempt: '++id'
     });
     this.on('populate', () => this.populate());
   }
@@ -47,3 +51,4 @@ export class AppDB extends Dexie {
 }
 
 export const db = new AppDB();
+

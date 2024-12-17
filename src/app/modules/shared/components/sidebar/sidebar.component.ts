@@ -19,7 +19,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   _taskDetail!: Task;
   @Input() 
   set taskDetail(v: Task){
-    console.log(v);
     this._taskDetail = v;
     this.textareaContent = this._taskDetail.notes ?? "";
   }
@@ -69,7 +68,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   onBackdropClick(event: MouseEvent) {
     if (this.isOpen && !this.mtOverlay.nativeElement.contains(event.target)) {
-      console.log("closing")
       this.onClose.emit();
     }
   }

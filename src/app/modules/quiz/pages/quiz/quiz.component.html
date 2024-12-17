@@ -19,17 +19,41 @@
               Puntuación: {{score}}
             </p>
           </div>
-          <h3 class="text-xl mb-4">{{questions[currentQuestionIndex].question}}</h3>
+          <h3 class="text-xl mb-4">{{questions[currentQuestionIndex]?.Question_text}}</h3>
         </div>
         
         <div class="space-y-4">
           <button
-            *ngFor="let option of questions[currentQuestionIndex].options"
-            (click)="handleAnswerSelect(option)"
+            
+            (click)="handleAnswerSelect('Option_1')"
             [disabled]="hasAnswered"
-            [class]="'w-full py-3 rounded-md transition duration-300 ' + getOptionClass(option)"
+            [class]="'w-full py-3 rounded-md transition duration-300 ' + getOptionClass('Option_1')"
           >
-            {{option}}
+            <b>a)</b> {{questions[currentQuestionIndex]?.Option_1}}
+          </button>
+          <button
+            
+            (click)="handleAnswerSelect('Option_2')"
+            [disabled]="hasAnswered"
+            [class]="'w-full py-3 rounded-md transition duration-300 ' + getOptionClass('Option_2')"
+          >
+            <b>b)</b> {{questions[currentQuestionIndex]?.Option_2}}
+          </button>
+          <button
+            
+            (click)="handleAnswerSelect('Option_3')"
+            [disabled]="hasAnswered"
+            [class]="'w-full py-3 rounded-md transition duration-300 ' + getOptionClass('Option_3')"
+          >
+            <b>c)</b> {{questions[currentQuestionIndex]?.Option_3}}
+          </button>
+          <button
+            
+            (click)="handleAnswerSelect('Option_4')"
+            [disabled]="hasAnswered"
+            [class]="'w-full py-3 rounded-md transition duration-300 ' + getOptionClass('Option_4')"
+          >
+            <b>d)</b> {{questions[currentQuestionIndex]?.Option_4}}
           </button>
         </div>
   
@@ -42,7 +66,7 @@
           <p>
             {{ isCorrectAnswer 
               ? 'Has elegido la respuesta correcta.' 
-              : 'La respuesta correcta es: ' + questions[currentQuestionIndex].correctAnswer }}
+              : 'La respuesta correcta es: ' }} <b>{{questions[currentQuestionIndex].Correct_option}}</b>
           </p>
         </div>
       </div>
@@ -80,6 +104,6 @@
     <app-quiz-sidebar
       (onClose)="isSidebarOpen = !isSidebarOpen" 
       [isOpen]="isSidebarOpen"
-      [attempts]="quizService.getAttempts()"
+      [attempts]="attempts"
     ></app-quiz-sidebar>
   </ng-template>

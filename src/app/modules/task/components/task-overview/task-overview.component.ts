@@ -96,7 +96,6 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
   }
 
   updateTask(task: Task){
-    console.log(task);
     this.taskService.update(task);
   }
 

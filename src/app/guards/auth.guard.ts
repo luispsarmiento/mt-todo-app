@@ -19,7 +19,6 @@ export class AuthGuard implements CanActivate {
   canActivate(): boolean | Observable<boolean> | Promise<boolean> {
     const token = this.tokenService.isValidToken();
     if (token){
-      console.log(token)
       return true;
     }
     return this.checkLogin()

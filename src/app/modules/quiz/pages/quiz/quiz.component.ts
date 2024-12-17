@@ -1,14 +1,27 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
 import { QuizService } from 'src/app/services/quiz.service';
 
+export interface Quiz{
+  id: number;
+  questions: QuizQuestion[];
+}
+
 export interface QuizQuestion {
-  question: string;
-  options: string[];
-  correctAnswer: string;
+  Question_text: string;
+  Answer_type: string;
+  Correct_option: string;
+  Points: string;
+  Option_1: string;
+  Option_2: string;
+  Option_3: string;
+  Option_4: string;
 }
 
 export interface QuizAttempt {
+  id?: number;
+  quizId: number;
   date: string;
   score: number;
   totalQuestions: number;
@@ -19,30 +32,14 @@ export interface QuizAttempt {
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.css']
 })
-export class QuizComponent implements OnInit {
+export class QuizComponent implements OnInit, AfterViewInit {
 
-  questions: QuizQuestion[] = [
-    {
-      question: "¿Cuál es la capital de España?",
-      options: ["Madrid", "Barcelona", "Valencia", "Sevilla"],
-      correctAnswer: "Madrid"
-    },
-    {
-      question: "¿Cuál es el río más largo de España?",
-      options: ["Ebro", "Guadalquivir", "Tajo", "Duero"],
-      correctAnswer: "Tajo"
-    },
-    {
-      question: "¿En qué año se fundó la Constitución Española?",
-      options: ["1975", "1978", "1980", "1982"],
-      correctAnswer: "1978"
-    }
-  ];
+  questions: QuizQuestion[] = [];
 
   currentQuestionIndex = 0;
   selectedAnswer: string | null = null;
   score = 0;
-  title = 'Quiz Español';
+  title = 'Quiz';
   isSidebarOpen = false;
   currentDate = new Date().toLocaleDateString();
   isInputValid = true;
@@ -51,15 +48,21 @@ export class QuizComponent implements OnInit {
   hasAnswered = false;
   attempts: QuizAttempt[] = [];
   hasFinished = false;
+  quizId$: Observable<string | undefined>;
+  quizId: number = 0;
 
   constructor(
     private router: Router, 
-    public quizService: QuizService){
-    this.questions = this.quizService.getQuestions();
-    //this.attempts = this.quizService.getAttempts();
+    public quizService: QuizService,
+    private activatedRoute: ActivatedRoute){
+    this.quizId$ = this.activatedRoute.params.pipe(map((params) => params['id']));
+  }
+  ngAfterViewInit(): void {
+    this.quizService.getQuestions(this.quizId).then(v => this.questions = v);
   }
 
   ngOnInit() {
+    this.quizId$.subscribe(v => this.quizId = parseInt(v ?? '0'));
   }
 
   get currentQuestion(): QuizQuestion {
@@ -68,14 +71,29 @@ export class QuizComponent implements OnInit {
 
   handleAnswerSelect(answer: string): void {
     if (!this.hasAnswered) {
-      this.selectedAnswer = answer;
+      let _answer = "";
+      switch(answer.replaceAll('Option_', '')){
+        case "1":
+          _answer = "a";
+          break;
+        case "2":
+          _answer = "b";
+          break;
+        case "3":
+          _answer = "c";
+          break;
+        case "4":
+          _answer = "d";
+          break;
+      }
+      this.selectedAnswer = _answer;
       this.showFeedback = false;
     }
   }
 
   validateAnswer(): void {
     if (this.selectedAnswer && !this.hasAnswered) {
-      this.isCorrectAnswer = this.selectedAnswer === this.questions[this.currentQuestionIndex].correctAnswer;
+      this.isCorrectAnswer = this.selectedAnswer === this.questions[this.currentQuestionIndex].Correct_option;
       if (this.isCorrectAnswer) {
         this.score++;
       }
@@ -95,11 +113,12 @@ export class QuizComponent implements OnInit {
         this.hasAnswered = false;
       } else {
         const attempt: QuizAttempt = {
+          quizId: this.quizId,
           date: new Date().toLocaleString(),
           score: this.score,
           totalQuestions: this.questions.length
         };
-        this.quizService.saveAttempt(attempt);
+        this.quizService.saveAttempt(attempt)
         this.viewResults();
         this.hasFinished = true;
       }
@@ -108,6 +127,9 @@ export class QuizComponent implements OnInit {
 
   viewResults(): void {
     this.isSidebarOpen = true;
+    this.quizService.getAttempts(this.quizId).then(v => {
+      this.attempts = v
+    });
   }
 
   getOptionClass(option: string): string {
@@ -115,7 +137,7 @@ export class QuizComponent implements OnInit {
       return this.selectedAnswer === option ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200';
     }
 
-    if (option === this.questions[this.currentQuestionIndex].correctAnswer) {
+    if (option === this.questions[this.currentQuestionIndex].Correct_option) {
       return 'bg-green-500 text-white';
     }
 

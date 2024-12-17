@@ -24,5 +24,9 @@ export class DbService {
   async find(storeName: string) {
     return await db.table(storeName).toArray();
   }
+
+  async findById(storeName: string, id: number) {
+    return (await db.table(storeName).get(id));
+  }
 }
 
