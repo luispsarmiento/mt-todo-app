@@ -20,7 +20,7 @@ export class TaskService {
   //tasks$ = liveQuery(() => this.listTasks());
 
   async listTasks() {
-    return (await this.find()).filter(e => !e.isDeleted);
+    return (await this.find()).filter(e => !e.isDeleted).sort((a: Task, b: Task) => b.id - a.id);
       /*.where({
         todoListId: this.todoList.id,
       })
@@ -42,7 +42,7 @@ export class TaskService {
       }
 
       return false;
-    });
+    }).sort((a: Task, b: Task) => b.id - a.id);
       /*.where({
         todoListId: this.todoList.id,
       })
@@ -72,6 +72,6 @@ export class TaskService {
   }
 
   get(){
-    this.sync.syncGet().subscribe();
+    return this.sync.syncGet();
   }
 }

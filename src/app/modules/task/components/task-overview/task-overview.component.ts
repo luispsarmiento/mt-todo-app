@@ -40,6 +40,7 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
   ) {
     
   }
+
   ngOnDestroy(): void {
     this.tasks$ = null;
   }
@@ -47,7 +48,7 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
   tasks$: any;
 
   ngOnInit() {
-    this.taskService.get();
+    this.taskService.get().subscribe();
     switch(this.filter){
       case 'ALL':
         this.tasks$ = liveQuery(() => this.taskService.listTasks());

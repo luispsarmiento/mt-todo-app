@@ -4,6 +4,7 @@ import {
   faSquareCheck,
   faTrash
 } from '@fortawesome/free-solid-svg-icons';
+import { Task } from 'src/app/models/task.model';
 
 @Component({
   selector: 'app-task',
@@ -17,6 +18,9 @@ export class TaskComponent implements OnInit {
 
   @Input()
   isDone: boolean = false;
+
+  @Input()
+  task!: Task;
 
   @Output()
   onDone = new EventEmitter();

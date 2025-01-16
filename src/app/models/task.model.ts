@@ -9,4 +9,5 @@ export interface Task{
     isSync?: boolean;
     isDeleted?: boolean;
     notes?: string;
+    createAt?: string | null;
 }

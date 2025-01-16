@@ -10,7 +10,7 @@
     <!-- Contenedor principal con desplazamiento -->
     <div class="flex-grow overflow-y-auto ">
       
-      <app-task *ngFor="let task of tasks$ | async" [title]="task.name"
+      <app-task *ngFor="let task of tasks$ | async" [title]="task.name" [task]="task"
         [isDone]="task.status === STATUS_COMPLETED ? true : false" (onDelete)="deleteTask(task)"
         (onDone)="task.status = $event ? STATUS_COMPLETED : STATUS_PENDING; updateTaskStatus(task)"
         (onTaskClick)="isSidebarOpen = !isSidebarOpen; selectTask(task)"></app-task>
