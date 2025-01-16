@@ -68,13 +68,16 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   onBackdropClick(event: MouseEvent) {
     if (this.isOpen && !this.mtOverlay.nativeElement.contains(event.target)) {
+      if (this._taskDetail.isSync){
+        this.onChangeTaskDetail.emit(this._taskDetail);
+      }
       this.onClose.emit();
     }
   }
 
   saveTaskNameByBlur(event: Event){
     if(!this.isSaveTaskNameByEnter){
-      console.warn("guardado desde blur")
+      console.warn("guardado desde blur");
       this.isSaveTaskNameByBlur = true;
       this.saveTaskName(event);
     }
@@ -82,30 +85,33 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   saveTaskNameByEnter(event: Event){
     if(!this.isSaveTaskNameByBlur){
-      console.warn("guardado desde enter")
+      console.warn("guardado desde enter");
       this.isSaveTaskNameByEnter = true;
       this.saveTaskName(event);
     }
   }
 
   onTextareaChange() {
-    this._taskDetail.notes = this.textareaContent;
-    this.onChangeTaskDetail.emit(this._taskDetail);
+    if (this._taskDetail.notes != this.textareaContent){
+      this._taskDetail.notes = this.textareaContent;
+      this._taskDetail.isSync = true;
+    }
   }
 
   addToMyDay(isAdded: boolean){
     this._taskDetail.scheduledDate = isAdded ? new Date().toISOString() : null;
-    this.isAddedToMyDay = !this.isAddedToMyDay
+    this.isAddedToMyDay = !this.isAddedToMyDay;
+    this._taskDetail.isSync = true;
     this.onChangeTaskDetail.emit(this._taskDetail);
   }
 
   private saveTaskName(event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    this._taskDetail.name = inputElement.value;
-    this.isEditing = false;
-    this.wait = setTimeout(() => {
-      this.onChangeTaskDetail.emit(this._taskDetail);
-    }, 500);
+    if (this._taskDetail.name != inputElement.value){
+      this._taskDetail.name = inputElement.value;
+      this.isEditing = false;
+      this._taskDetail.isSync = true;
+    }
   }
 
   private setMyDayFilterDate(){
