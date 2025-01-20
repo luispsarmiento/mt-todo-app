@@ -68,10 +68,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   onBackdropClick(event: MouseEvent) {
     if (this.isOpen && !this.mtOverlay.nativeElement.contains(event.target)) {
-      if (this._taskDetail.isSync){
-        this.onChangeTaskDetail.emit(this._taskDetail);
-      }
-      this.onClose.emit();
+      this.close();
     }
   }
 
@@ -103,6 +100,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.isAddedToMyDay = !this.isAddedToMyDay;
     this._taskDetail.isSync = true;
     this.onChangeTaskDetail.emit(this._taskDetail);
+  }
+
+  close(){
+    if (this._taskDetail.isSync){
+      this.onChangeTaskDetail.emit(this._taskDetail);
+    }
+    this.onClose.emit();
   }
 
   private saveTaskName(event: Event) {

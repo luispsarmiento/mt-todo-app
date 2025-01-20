@@ -1,6 +1,6 @@
 <div class="fixed inset-0 z-50 bg-gray-800 bg-opacity-75" (click)="onBackdropClick($event)">
   <div #mtOverlay class="fixed bottom-0 right-0 top-0 h-auto overflow-y-auto rounded-2xl p-4 bg-slate-100 md:relative md:bottom-auto md:right-auto md:top-auto md:h-full md:w-1/2 lg:w-1/2 ml-auto w-full overflow-y-auto">
-    <button class="absolute right-2 px-2 text-gray-600 hover:text-gray-900" (click)="onClose.emit()">
+    <button class="absolute right-2 px-2 text-gray-600 hover:text-gray-900" (click)="close()">
       <fa-icon class="inset-0 m-auto text-xl" [icon]="faClose"></fa-icon>
     </button>
     <div class="mt-10">
