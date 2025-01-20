@@ -9,6 +9,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { AllComponent } from './pages/all/all.component';
 import { MyDayComponent } from './pages/my-day/my-day.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { MyDayComponent } from './pages/my-day/my-day.component';
     FontAwesomeModule,
     OverlayModule,
     CdkAccordionModule,
+    FormsModule
   ],
   declarations: [
     TaskOverviewComponent,

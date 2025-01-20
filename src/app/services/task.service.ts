@@ -19,8 +19,9 @@ export class TaskService {
 
   //tasks$ = liveQuery(() => this.listTasks());
 
-  async listTasks() {
-    return (await this.find()).filter(e => !e.isDeleted).sort((a: Task, b: Task) => b.id - a.id);
+  async listTasks(status: string = "all") {
+    return (await this.find()).filter((task: Task) => !task.isDeleted && (status === 'all' || task.status === status))
+                              .sort((a: Task, b: Task) => b.id - a.id);
       /*.where({
         todoListId: this.todoList.id,
       })

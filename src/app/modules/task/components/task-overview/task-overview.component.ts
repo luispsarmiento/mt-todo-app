@@ -30,6 +30,7 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
   isSidebarOpen: boolean = false;
   taskSelected!: Task
   currentDate!: string | null;
+  taskFilter: string = 'all';
 
   private myDayFilterFromDate!: string;
   private myDayFilterToDate!: string;
@@ -49,15 +50,7 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.taskService.get().subscribe();
-    switch(this.filter){
-      case 'ALL':
-        this.tasks$ = liveQuery(() => this.taskService.listTasks());
-        break;
-      case 'MY_DAY':
-        this.setMyDayFilterDate();
-        this.tasks$ = liveQuery(() => this.taskService.listBySchudeledDate(this.myDayFilterFromDate, this.myDayFilterToDate));
-        break;
-    }
+    this.initTaskListLiveQuery();
     this.currentDate = this.datePipe.transform(new Date(), 'fullDate');
   }
 
@@ -80,6 +73,8 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
       this.taskService.add(newTask)
 
       newTaskBox.value = '';
+      this.taskFilter = "all";
+      this.initTaskListLiveQuery();
     }
   }
 
@@ -112,9 +107,26 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
     this.taskSelected = task;
   }
 
+  filterTasks(){
+    this.initTaskListLiveQuery();
+  }
+
   private setMyDayFilterDate(){
     let now = new Date();
     this.myDayFilterFromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
     this.myDayFilterToDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59).toISOString();
+  }
+
+  private initTaskListLiveQuery(){
+    this.tasks$ = null;
+    switch(this.filter){
+      case 'ALL':
+        this.tasks$ = liveQuery(() => this.taskService.listTasks(this.taskFilter));
+        break;
+      case 'MY_DAY':
+        this.setMyDayFilterDate();
+        this.tasks$ = liveQuery(() => this.taskService.listBySchudeledDate(this.myDayFilterFromDate, this.myDayFilterToDate));
+        break;
+    }
   }
 }
