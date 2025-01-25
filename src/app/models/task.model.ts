@@ -10,4 +10,10 @@ export interface Task{
     isDeleted?: boolean;
     notes?: string;
     createAt?: string | null;
+    subTasks?: SubTask[];
+}
+
+export interface SubTask{
+    name: string;
+    status?: 'pending' | 'scheduled' | 'completed' ;
 }

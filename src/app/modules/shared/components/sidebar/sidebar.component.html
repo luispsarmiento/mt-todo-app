@@ -14,11 +14,34 @@
           class="flex-grow text-lg font-medium text-gray-700 px-2 py-1 rounded-lg border-none outline-none w-full focus:border-none focus:outline-none focus:ring-0">
         </ng-template>
       </div>
+      <!-- Subtasks Section -->
+      <h3 class="text-lg font-medium text-gray-700 py-2 px-4 mb-4">Subtareas</h3>
+      <div class="bg-white p-4 rounded-lg shadow-md mb-4">
+        <div class="flex items-center justify-end mb-3">
+          <button class="text-gray-600 hover:text-gray-900" (click)="addSubTask()">
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
+        </div>
 
-      <!--<button class="w-full bg-white text-lg font-medium text-gray-700 py-2 px-4 rounded-lg mb-4 hover:bg-white focus:outline-none flex items-center justify-between" (click)="addToMyDay()">
-        Agregar a mi día
-        <i class="fas fa-sun mr-2"></i>
-      </button>-->
+        <!-- Subtask List -->
+        <div class="space-y-2">
+            <div *ngFor="let subtask of _taskDetail?.subTasks; let i = index" class="flex items-center gap-2">
+              <input type="checkbox" 
+                  [checked]="subtask.status == 'completed'"
+                  (change)="toggleSubTask(i)"
+                  class="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+              <input type="text" 
+                #subtaskInput
+                [value]="subtask.name"
+                (blur)="updateSubTaskName($event, i)"
+                (keyup.enter)="addSubTaskAndFocus()"
+                class="flex-grow text-gray-700 px-2 py-1 rounded-lg border-none outline-none focus:ring-0 hover:bg-gray-50">
+              <button class="text-gray-400 hover:text-red-500" (click)="deleteSubTask(i)">
+                <fa-icon [icon]="faTrash"></fa-icon>
+              </button>
+            </div>
+        </div>
+      </div>
       <button
         class="w-full text-lg font-medium py-2 px-4 rounded-lg mb-4 flex items-center justify-between focus:outline-none text-gray-700 hover:bg-gray-100"
         (click)="addToMyDay(!isAddedToMyDay)"

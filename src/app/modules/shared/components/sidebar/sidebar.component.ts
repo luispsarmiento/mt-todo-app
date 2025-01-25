@@ -1,6 +1,6 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { Task } from 'src/app/models/task.model';
-import { faClose, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faClose, faSun, faTrash, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,8 +9,12 @@ import { faClose, faSun } from '@fortawesome/free-solid-svg-icons';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
 
+  @ViewChildren('subtaskInput') subtaskInputs!: QueryList<ElementRef>;
+
   faClose = faClose;
   faSun = faSun;
+  faTrash = faTrash;
+  faPlus = faPlus;
 
   @ViewChild('mtOverlay') mtOverlay!: ElementRef;
 
@@ -107,6 +111,44 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.onChangeTaskDetail.emit(this._taskDetail);
     }
     this.onClose.emit();
+  }
+
+  addSubTask(){
+    if (!this._taskDetail.subTasks) {
+      this._taskDetail.subTasks = [];
+    }
+    this._taskDetail.subTasks.push({
+      name: '',
+      status: 'pending'
+    });
+  }
+
+  toggleSubTask(index: number){
+    if (this._taskDetail.subTasks && this._taskDetail.subTasks[index]) {
+      this._taskDetail.subTasks[index].status = this._taskDetail.subTasks[index].status === 'pending' ? 'completed' : 'pending';
+    }
+  }
+
+  updateSubTaskName(event: Event, index: number){
+    const inputElement = event.target as HTMLInputElement;
+    if (this._taskDetail.subTasks && this._taskDetail.subTasks[index]) {
+      this._taskDetail.subTasks[index].name = inputElement.value;
+    }
+  }
+
+  deleteSubTask(index: number){
+    if (this._taskDetail.subTasks) {
+      this._taskDetail.subTasks = this._taskDetail.subTasks.filter((_, i) => i !== index);
+    }
+  }
+
+  addSubTaskAndFocus() {
+    this.addSubTask();
+    setTimeout(() => {
+      const inputs = this.subtaskInputs.toArray();
+      const lastInput = inputs[inputs.length - 1];
+      lastInput?.nativeElement.focus();
+    });
   }
 
   private saveTaskName(event: Event) {
