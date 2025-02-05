@@ -87,7 +87,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   saveTaskNameByEnter(event: Event){
     if(!this.isSaveTaskNameByBlur){
       console.warn("guardado desde enter");
-      this.isSaveTaskNameByEnter = true;
+      this.isSaveTaskNameByEnter = false;
       this.saveTaskName(event);
     }
   }
@@ -95,19 +95,19 @@ export class SidebarComponent implements OnInit, OnDestroy {
   onTextareaChange() {
     if (this._taskDetail.notes != this.textareaContent){
       this._taskDetail.notes = this.textareaContent;
-      this._taskDetail.isSync = true;
+      this._taskDetail.isSync = false;
     }
   }
 
   addToMyDay(isAdded: boolean){
     this._taskDetail.scheduledDate = isAdded ? new Date().toISOString() : null;
     this.isAddedToMyDay = !this.isAddedToMyDay;
-    this._taskDetail.isSync = true;
+    this._taskDetail.isSync = false;
     this.onChangeTaskDetail.emit(this._taskDetail);
   }
 
   close(){
-    if (this._taskDetail.isSync){
+    if (!this._taskDetail.isSync){
       this.onChangeTaskDetail.emit(this._taskDetail);
     }
     this.onClose.emit();
@@ -121,11 +121,13 @@ export class SidebarComponent implements OnInit, OnDestroy {
       name: '',
       status: 'pending'
     });
+    this._taskDetail.isSync = false;
   }
 
   toggleSubTask(index: number){
     if (this._taskDetail.subTasks && this._taskDetail.subTasks[index]) {
       this._taskDetail.subTasks[index].status = this._taskDetail.subTasks[index].status === 'pending' ? 'completed' : 'pending';
+      this._taskDetail.isSync = false;
     }
   }
 
@@ -133,12 +135,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
     const inputElement = event.target as HTMLInputElement;
     if (this._taskDetail.subTasks && this._taskDetail.subTasks[index]) {
       this._taskDetail.subTasks[index].name = inputElement.value;
+      this._taskDetail.isSync = false;
     }
   }
 
   deleteSubTask(index: number){
     if (this._taskDetail.subTasks) {
       this._taskDetail.subTasks = this._taskDetail.subTasks.filter((_, i) => i !== index);
+      this._taskDetail.isSync = false;
     }
   }
 
@@ -156,7 +160,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
     if (this._taskDetail.name != inputElement.value){
       this._taskDetail.name = inputElement.value;
       this.isEditing = false;
-      this._taskDetail.isSync = true;
+      this._taskDetail.isSync = false;
     }
   }
 

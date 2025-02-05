@@ -96,7 +96,7 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
   }
 
   validateInput(_newTaskName: string){
-    if (_newTaskName.length >= 80){
+    if (_newTaskName.length >= 200){
       this.isInputValid = false;
     } else {
       this.isInputValid = true;
@@ -104,6 +104,11 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
   }
 
   selectTask(task: Task){
+    if(typeof task._id === 'undefined'){
+      return;
+    }
+
+    this.isSidebarOpen = !this.isSidebarOpen; 
     this.taskSelected = task;
   }
 

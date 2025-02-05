@@ -49,32 +49,42 @@ export class SyncService extends HttpService {
     
     tasks = query.filter(t => !t.isSync);
 
-    if (typeof tasks !== 'undefined'){
-      console.info("Syncing...");
+    if (typeof tasks !== 'undefined') {
       this.loaderService.show();
       this.syncQueue = [];
-      for(let task of tasks){
+
+      for (let task of tasks) {
         let req;
-        if (task._id && !task.isDeleted){
-          const data = {
-            name: task.name,
-            priority: task.priority,
-            scheduledDate: task.scheduledDate,
-            status: task.status,
-            completedDate: task.completedDate?.toString() != "1970-01-01T00:00:00.000Z" ? task.completedDate : "1970-01-01 00:00:00",
-            notes: task.notes ?? "",
-            subTasks: task.subTasks ?? [],
-          };
-          req = this.http.patch(`${environment.baseUrl}${this.endpoint}/${task._id}`, data, {context: checkToken()})
-                    .pipe(catchError(this.handleError));
-        } else if (task._id && task.isDeleted){
-          req = this.http.delete<HttpResponse<any>>(`${environment.baseUrl}${this.endpoint}/${task._id}`, {context: checkToken()})
-                    .pipe(
-                      map((res: HttpResponse<any>) => {
-                        this.db.delete('Task', task.id);
-                      }),
-                      catchError(this.handleError)
-                    )
+
+        if (typeof task._id !== 'undefined') {
+          if (!task.isDeleted){
+            const data = {
+              name: task.name,
+              priority: task.priority,
+              scheduledDate: task.scheduledDate,
+              status: task.status,
+              completedDate: task.completedDate?.toString() != "1970-01-01T00:00:00.000Z" ? task.completedDate : "1970-01-01 00:00:00",
+              notes: task.notes ?? "",
+              subTasks: task.subTasks ?? [],
+            };
+
+            req = this.http.patch<HttpResponse<{ message: string, data: Task }>>(`${environment.baseUrl}${this.endpoint}/${task._id}`, data, { context: checkToken() })
+              .pipe(
+                map((res: HttpResponse<{ message: string, data: Task }>) => {
+                  let _task = { ...task, ...res.data, isSync: true };
+  
+                  this.db.update('Task', _task.id, _task);
+                }),
+                catchError(this.handleError));
+          } else {
+            req = this.http.delete<HttpResponse<any>>(`${environment.baseUrl}${this.endpoint}/${task._id}`, { context: checkToken() })
+            .pipe(
+              map((res: HttpResponse<any>) => {
+                this.db.delete('Task', task.id);
+              }),
+              catchError(this.handleError)
+            );
+          }
         } else {
           const data = {
             name: task.name,
@@ -83,20 +93,21 @@ export class SyncService extends HttpService {
             //status: task.status,
             completedDate: task.completedDate,
           };
-          req = this.http.post<HttpResponse<{_id: string}>>(`${environment.baseUrl}${this.endpoint}`, data, {context: checkToken()})
-                    .pipe(
-                      map((res: HttpResponse<{_id: string}>) => {
-                        let _task = {...task, _id: res.data._id, isSync: true};
-            
-                        this.db.update('Task', _task.id, _task);
-                      }),
-                      catchError(this.handleError)
-                    );
+
+          req = this.http.post<HttpResponse<{ _id: string }>>(`${environment.baseUrl}${this.endpoint}`, data, { context: checkToken() })
+            .pipe(
+              map((res: HttpResponse<{ _id: string }>) => {
+                let _task = { ...task, _id: res.data._id, isSync: true };
+
+                this.db.update('Task', _task.id, _task);
+              }),
+              catchError(this.handleError)
+            );
         }
         this.syncQueue.push(req);
       }
 
-      await forkJoin(this.syncQueue).toPromise().catch(err => {});
+      await forkJoin(this.syncQueue).toPromise().catch(err => { });
 
       this.syncQueue = [];
       this.loaderService.close();

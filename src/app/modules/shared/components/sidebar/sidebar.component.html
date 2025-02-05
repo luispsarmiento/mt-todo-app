@@ -17,12 +17,6 @@
       <!-- Subtasks Section -->
       <h3 class="text-lg font-medium text-gray-700 py-2 px-4 mb-4">Subtareas</h3>
       <div class="bg-white p-4 rounded-lg shadow-md mb-4">
-        <div class="flex items-center justify-end mb-3">
-          <button class="text-gray-600 hover:text-gray-900" (click)="addSubTask()">
-            <fa-icon [icon]="faPlus"></fa-icon>
-          </button>
-        </div>
-
         <!-- Subtask List -->
         <div class="space-y-2">
             <div *ngFor="let subtask of _taskDetail?.subTasks; let i = index" class="flex items-center gap-2">
@@ -40,6 +34,11 @@
                 <fa-icon [icon]="faTrash"></fa-icon>
               </button>
             </div>
+        </div>
+        <div class="flex items-center justify-end mb-3">
+          <button class="text-gray-600 hover:text-gray-900" (click)="addSubTaskAndFocus()">
+            <fa-icon [icon]="faPlus"></fa-icon>
+          </button>
         </div>
       </div>
       <button
