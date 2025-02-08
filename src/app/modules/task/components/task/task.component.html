@@ -8,6 +8,18 @@
         <p (click)="onTaskClick.emit()" class="task-name text-sm md:text-base font-semibold text-gray-700 whitespace-normal break-words overflow-hidden">{{ title }}</p>
         <p class="task-date text-xs text-gray-500">{{ task.createAt | date:'dd/MM/YYYY HH:mm' }}</p>
       </div>
+      <!-- Timer Section -->
+      <div class="flex items-center gap-2">
+        <button 
+          [ngClass]="{'bg-green-500': task.isTimerRunning, 'bg-gray-300': !task.isTimerRunning}"
+          class="px-3 py-1 rounded-lg text-white flex items-center gap-1"
+          (click)="$event.stopPropagation(); toggleTimer(task);">
+          <fa-icon [icon]="task.isTimerRunning ? faPause : faPlay"></fa-icon>
+          <span *ngIf="task.startDate && !task.completedDate">
+            {{ elapsedFocustimer }}
+          </span>
+        </button>
+      </div>
       <button class="delete-button relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (mouseenter)="iconTrashClassName = 'text-red-500'" (mouseleave)="iconTrashClassName = 'text-gray-700'" (click)="onDelete.emit()">
         <fa-icon class="absolute inset-0 m-auto text-3xl" [icon]="iconTrash" [ngClass]="iconTrashClassName"></fa-icon>
       </button> 
@@ -22,6 +34,11 @@
       <div class="task-details flex-auto ml-4 mr-4">
         <p (click)="onTaskClick.emit()" class="task-name text-sm md:text-base font-semibold text-gray-700 line-through opacity-50 whitespace-normal break-words overflow-hidden">{{ title }}</p>
         <p class="task-date text-xs text-gray-500">{{ task.createAt | date:'dd/MM/YYYY HH:mm' }}</p>
+      </div>
+      <div *ngIf="task.focusTimer" class="text-sm text-gray-600">
+        <span class="ml-2">
+          Transcurrido: {{ focusTimer.minutes + '.' + focusTimer.seconds }} min.
+        </span>
       </div>
       <button class="delete-button relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (mouseenter)="iconTrashClassName = 'text-red-500'" (mouseleave)="iconTrashClassName = 'text-gray-700'" (click)="onDelete.emit()">
         <fa-icon class="absolute inset-0 m-auto text-3xl" [icon]="iconTrash" [ngClass]="iconTrashClassName"></fa-icon>

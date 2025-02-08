@@ -66,6 +66,8 @@ export class SyncService extends HttpService {
               completedDate: task.completedDate?.toString() != "1970-01-01T00:00:00.000Z" ? task.completedDate : "1970-01-01 00:00:00",
               notes: task.notes ?? "",
               subTasks: task.subTasks ?? [],
+              startDate: task.startDate ?? null,
+              breakDate: task.breakDate ?? null,
             };
 
             req = this.http.patch<HttpResponse<{ message: string, data: Task }>>(`${environment.baseUrl}${this.endpoint}/${task._id}`, data, { context: checkToken() })
