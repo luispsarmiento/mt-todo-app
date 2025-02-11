@@ -1,7 +1,7 @@
 <div class="task-container mx-auto mt-5 w-full">
   <ng-template [ngIf]="!isDone">
     <div class="task bg-white shadow-md rounded-lg px-4 py-3 flex items-center border-r-4 border-yellow-400">
-      <button class="edit-button relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="isDone = !isDone; onDone.emit(isDone)">
+      <button class="edit-button relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()" (click)="onDoneClick()">
         <fa-icon class="absolute inset-0 m-auto text-yellow-400 text-3xl" [icon]="icon"></fa-icon>
       </button>  
       <div class="task-details flex-auto ml-4 mr-4">
@@ -13,7 +13,7 @@
         <button 
           [ngClass]="{'bg-green-500': task.isTimerRunning, 'bg-gray-300': !task.isTimerRunning}"
           class="px-3 py-1 rounded-lg text-white flex items-center gap-1"
-          (click)="$event.stopPropagation(); toggleTimer(task);">
+          (click)="$event.stopPropagation(); toggleTimer();">
           <fa-icon [icon]="task.isTimerRunning ? faPause : faPlay"></fa-icon>
           <span *ngIf="task.startDate && !task.completedDate">
             {{ elapsedFocustimer }}

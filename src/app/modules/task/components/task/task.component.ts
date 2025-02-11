@@ -69,28 +69,45 @@ export class TaskComponent implements OnInit {
     this.stopTimeCounter();
   }
 
-  toggleTimer(task: Task) {
-    const now = new Date().toISOString();
-    
-    if (!task.startDate) {
-      // Start new timer
-      task.startDate = now;
-      task.isTimerRunning = true;
-      this.startTimeCounter();
-    } else if (task.isTimerRunning) {
-      // Pause timer
-      task.breakDate = now;
-      task.isTimerRunning = false;
-      this.stopTimeCounter();
+  toggleTimer() {
+    if (!this.task.startDate) {
+      this.startTimer();
+    } else if (this.task.isTimerRunning) {
+      this.pauseTimer	();
     } else {
-      // Resume timer
-      task.breakDate = null;
-      task.isTimerRunning = true;
-      this.startTimeCounter();
+      this.stopTimer();
     }
   }
 
-  startTimeCounter() {
+  onDoneClick(){
+    this.isDone = !this.isDone;
+    this.stopTimer();
+    this.onDone.emit(this.isDone);
+  }
+
+  private startTimer(){
+    const now = new Date().toISOString();
+    // Start new timer
+    this.task.startDate = now;
+    this.task.isTimerRunning = true;
+    this.startTimeCounter();
+  }
+
+  private pauseTimer(){
+    const now = new Date().toISOString();
+    // Pause timer
+    this.task.breakDate = now;
+    this.task.isTimerRunning = false;
+    this.stopTimeCounter();
+  }
+
+  private stopTimer(){
+    // Resume timer
+    this.task.isTimerRunning = true;
+    this.startTimeCounter();
+  }
+
+  private startTimeCounter() {
     this.stopTimeCounter();
     this.timerSubs = interval(1000).subscribe(() => {
       if (this.task?.isTimerRunning && this.task?.startDate) {
@@ -99,13 +116,13 @@ export class TaskComponent implements OnInit {
     });
   }
 
-  stopTimeCounter(){
+  private stopTimeCounter(){
     if (this.timerSubs) {
       this.timerSubs.unsubscribe();
     }
   }
 
-  getElapsedTime(): string {
+  private getElapsedTime(): string {
     this.timer += 1;
 
     const minutes = Math.floor(this.timer / 60);
@@ -114,7 +131,7 @@ export class TaskComponent implements OnInit {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }
 
-  setFocusTimer(){
+  private setFocusTimer(){
     const seconds = Math.floor((this.task.focusTimer || 0) / 1000);
     const minutes = Math.floor(seconds / 60);
     const hours = Math.floor(minutes / 60);
