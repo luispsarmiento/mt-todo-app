@@ -29,7 +29,7 @@
                 [value]="subtask.name"
                 (blur)="updateSubTaskName($event, i)"
                 (keyup.enter)="addSubTaskAndFocus()"
-                class="flex-grow text-gray-700 px-2 py-1 rounded-lg border-none outline-none focus:ring-0 hover:bg-gray-50">
+                class="flex-grow text-gray-700 px-2 py-1 rounded-lg border-none outline-none focus:ring-0 hover:bg-gray-50" [ngClass]="{ 'line-through text-gray-400 italic': subtask.status == 'completed' }">
               <button class="text-gray-400 hover:text-red-500" (click)="deleteSubTask(i)">
                 <fa-icon [icon]="faTrash"></fa-icon>
               </button>
