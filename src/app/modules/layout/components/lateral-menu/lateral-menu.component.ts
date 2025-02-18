@@ -1,3 +1,4 @@
+import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { 
@@ -8,8 +9,11 @@ import {
   faBars,
   faAngleUp,
   faAngleDown,
-  faSignOut
+  faSignOut,
+  faPlus,
+  faFolder,
 } from '@fortawesome/free-solid-svg-icons';
+import { DialogComponent } from 'src/app/modules/shared/components/dialog/dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -29,6 +33,8 @@ export class LateralMenuComponent implements OnInit {
   faAngleUp = faAngleUp;
   faAngleDown = faAngleDown;
   faSignOut = faSignOut;
+  faPlus = faPlus;
+  faFolder = faFolder;
 
   isOpen = false;
   isOpenUOverlay = false;
@@ -36,7 +42,8 @@ export class LateralMenuComponent implements OnInit {
     private router: Router,
     private toast: ToastService,
     private loader: LoaderService,
-    private authService: AuthService
+    private authService: AuthService,
+    private dialog: Dialog
   ) { }
 
   ngOnInit() {
@@ -58,5 +65,18 @@ export class LateralMenuComponent implements OnInit {
   lateralNavigateTo(route: string){
     this.navigateTo(route);
     this.isOpen = !this.isOpen;
+  }
+
+  createNewSpace(){
+    const _dialogRef = this.dialog.open(DialogComponent, {
+      minWidth: '300px',
+      maxWidth : '50%',
+      data: {
+      }
+    });
+
+    _dialogRef.closed.subscribe(result => {
+      console.log(result);
+    });
   }
 }

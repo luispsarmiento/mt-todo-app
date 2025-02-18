@@ -5,15 +5,19 @@ import { ToastComponent } from './components/toast/toast.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DialogModule } from '@angular/cdk/dialog';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { DialogBaseComponent } from './components/dialog-base/dialog-base.component';
 
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    DialogModule
   ],
-  declarations: [BtnComponent, ToastComponent, SidebarComponent],
-  exports: [BtnComponent, ToastComponent, SidebarComponent]
+  declarations: [BtnComponent, ToastComponent, SidebarComponent, DialogComponent, DialogBaseComponent],
+  exports: [BtnComponent, ToastComponent, SidebarComponent, DialogComponent, DialogBaseComponent]
 })
 export class SharedModule { }
