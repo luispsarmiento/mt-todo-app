@@ -42,8 +42,7 @@ export class LateralMenuComponent implements OnInit {
     private router: Router,
     private toast: ToastService,
     private loader: LoaderService,
-    private authService: AuthService,
-    private dialog: Dialog
+    private authService: AuthService
   ) { }
 
   ngOnInit() {
@@ -67,16 +66,5 @@ export class LateralMenuComponent implements OnInit {
     this.isOpen = !this.isOpen;
   }
 
-  createNewSpace(){
-    const _dialogRef = this.dialog.open(DialogComponent, {
-      minWidth: '300px',
-      maxWidth : '50%',
-      data: {
-      }
-    });
-
-    _dialogRef.closed.subscribe(result => {
-      console.log(result);
-    });
-  }
+  
 }

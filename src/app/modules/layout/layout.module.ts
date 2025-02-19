@@ -8,6 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { SharedModule } from "../shared/shared.module";
 import { LateralMenuComponent } from './components/lateral-menu/lateral-menu.component';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
+import { SpaceModule } from "../space/space.module";
 
 @NgModule({
     declarations: [
@@ -16,13 +17,14 @@ import { CdkAccordionModule } from '@angular/cdk/accordion';
         LateralMenuComponent
     ],
     imports: [
-        CommonModule,
-        LayoutRoutingModule,
-        OverlayModule,
-        FontAwesomeModule,
-        SharedModule,
-        CdkAccordionModule,
-    ],
+    CommonModule,
+    LayoutRoutingModule,
+    OverlayModule,
+    FontAwesomeModule,
+    SharedModule,
+    CdkAccordionModule,
+    SpaceModule
+],
     exports: [
         LateralMenuComponent
     ]
