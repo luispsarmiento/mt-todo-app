@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { SpaceService } from 'src/app/services/space.service';
 import { Space } from 'src/app/models/space.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-space-menu',
@@ -19,17 +20,19 @@ export class SpaceMenuComponent implements OnInit {
   faFolder = faFolder;
   faSpinner = faSpinner;
 
-  spaces: Space[] = [];
-  isLoading: boolean = true;
-  error: any;
+  spaces$!: Observable<Space[]>;
+  isLoading$ = this.service.loading$;
+  error$ = this.service.error$;
 
   constructor(
     private dialog: Dialog,
     private service: SpaceService
-  ) { }
+  ) { 
+    this.spaces$ = this.service.spaces$;
+  }
 
   ngOnInit() {
-    this.loadSpaces();
+    this.service.loadSpaces();
   }
 
   createNewSpace(){
@@ -44,17 +47,5 @@ export class SpaceMenuComponent implements OnInit {
       console.log(result);
     });
   }
-
-  loadSpaces(){
-    this.isLoading = true;
-    this.error = null;
-
-    this.service.listSpaces().subscribe((spaces: Space[]) => {
-      this.spaces = spaces;
-      this.isLoading = false;
-    }, (error) => {
-      this.error = error;
-      this.isLoading = false;
-    });
-  }
+  loadSpaces = () => this.service.loadSpaces();
 }

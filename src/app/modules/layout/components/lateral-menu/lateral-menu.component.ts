@@ -13,7 +13,6 @@ import {
   faPlus,
   faFolder,
 } from '@fortawesome/free-solid-svg-icons';
-import { DialogComponent } from 'src/app/modules/shared/components/dialog/dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { ToastService } from 'src/app/services/toast.service';
