@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Space } from '../models/space.model';
 import { checkToken } from '../interceptors/token.interceptor';
 import { BehaviorSubject, catchError, shareReplay, tap } from 'rxjs';
+import { HttpResponse } from '../models/http.model';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +49,14 @@ export class SpaceService extends HttpService{
     }
 
     return this.spaces$;
+  }
+
+  addSpace(space: Space) {
+    return this.httpClient.post<HttpResponse<Space>>(`${environment.baseUrl}${this.endpoint}`, space, {context: checkToken()}).pipe(
+      tap((res: HttpResponse<Space>) => {
+        const currentSpaces = this.spacesSubject.value;
+        this.spacesSubject.next([...currentSpaces, res.data]);
+      })
+    );
   }
 }

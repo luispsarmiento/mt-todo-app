@@ -1,6 +1,6 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { Component, OnInit } from '@angular/core';
-import { DialogComponent } from 'src/app/modules/shared/components/dialog/dialog.component';
+import { DialogComponent, MtDialogResultData } from 'src/app/modules/shared/components/dialog/dialog.component';
 import {
   faPlus,
   faFolder,
@@ -43,9 +43,15 @@ export class SpaceMenuComponent implements OnInit {
       }
     });
 
-    _dialogRef.closed.subscribe(result => {
-      console.log(result);
+    _dialogRef.closed.subscribe((result) => {
+      const _result = result as MtDialogResultData;
+      if (_result.isRefresh && _result.spaceName) {
+        this.service.addSpace({
+          name: _result.spaceName
+        }).subscribe();
+      }
     });
   }
+
   loadSpaces = () => this.service.loadSpaces();
 }

@@ -6,8 +6,9 @@ interface MtDialogData {
   data: any;
 }
 
-interface MtDialogResultData {
+export interface MtDialogResultData {
   isRefresh: boolean;
+  spaceName?: string;
 }
 
 @Component({
@@ -21,6 +22,8 @@ export class DialogComponent implements OnInit {
   _data!: MtDialogData;
   spaceName: any;
 
+  isSaveButtonDisabled = true;
+
   constructor(
     private dialogRef: DialogRef<MtDialogResultData>,
     @Inject(DIALOG_DATA) private data: MtDialogData
@@ -33,12 +36,15 @@ export class DialogComponent implements OnInit {
 
   close() {
     this.dialogRef.close({
-      isRefresh: true
+      isRefresh: false
     });
   }
 
   
   createSpace(){
-    
+    this.dialogRef.close({
+      isRefresh: true,
+      spaceName: this.spaceName
+    });
   }
 }
