@@ -8,6 +8,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DialogModule } from '@angular/cdk/dialog';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { DialogBaseComponent } from './components/dialog-base/dialog-base.component';
+import { ContentLayoutComponent } from './components/content-layout/content-layout.component';
 
 
 @NgModule({
@@ -17,7 +18,7 @@ import { DialogBaseComponent } from './components/dialog-base/dialog-base.compon
     FontAwesomeModule,
     DialogModule
   ],
-  declarations: [BtnComponent, ToastComponent, SidebarComponent, DialogComponent, DialogBaseComponent],
-  exports: [BtnComponent, ToastComponent, SidebarComponent, DialogComponent, DialogBaseComponent]
+  declarations: [BtnComponent, ToastComponent, SidebarComponent, DialogComponent, DialogBaseComponent, ContentLayoutComponent],
+  exports: [BtnComponent, ToastComponent, SidebarComponent, DialogComponent, DialogBaseComponent, ContentLayoutComponent]
 })
 export class SharedModule { }

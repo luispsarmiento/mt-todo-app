@@ -9,6 +9,7 @@ import {
 import { SpaceService } from 'src/app/services/space.service';
 import { Space } from 'src/app/models/space.model';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-space-menu',
@@ -26,7 +27,8 @@ export class SpaceMenuComponent implements OnInit {
 
   constructor(
     private dialog: Dialog,
-    private service: SpaceService
+    private service: SpaceService,
+    private router: Router
   ) { 
     this.spaces$ = this.service.spaces$;
   }
@@ -54,4 +56,8 @@ export class SpaceMenuComponent implements OnInit {
   }
 
   loadSpaces = () => this.service.loadSpaces();
+
+  navigateTo(route: string) {
+    this.router.navigate([route]);
+  }
 }

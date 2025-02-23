@@ -7,7 +7,7 @@
 <ng-container *ngIf="!(isLoading$ | async); else loading">
   <ng-container *ngIf="!(error$ | async); else errorTpl">
     <ul class="py-2">
-      <li *ngFor="let space of spaces$ | async" class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer">
+      <li *ngFor="let space of spaces$ | async" class="flex items-center px-4 py-2 hover:bg-slate-600/30 cursor-pointer" (click)="navigateTo('app/space/' + space._id)">
         <fa-icon class="text-purple-400 mr-4" [icon]="faFolder"></fa-icon>
         {{ space.name }}
       </li>

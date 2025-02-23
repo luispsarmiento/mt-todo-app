@@ -6,17 +6,20 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { FormsModule } from '@angular/forms';
+import { OverviewComponent } from './pages/overview/overview.component';
+import { SpaceRoutingModule } from './space-routing.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    SpaceRoutingModule,
     SharedModule,
     FontAwesomeModule,
     OverlayModule,
     CdkAccordionModule,
     FormsModule
   ],
-  declarations: [SpaceMenuComponent],
+  declarations: [SpaceMenuComponent, OverviewComponent],
   exports: [SpaceMenuComponent]
 })
 export class SpaceModule { }

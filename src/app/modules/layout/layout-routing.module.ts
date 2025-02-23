@@ -39,6 +39,10 @@ const routes: Routes = [
           path: 'quiz',
           loadChildren: () => import('../quiz/quiz.module').then(m => m.QuizModule)
         },
+        {
+          path: 'space',
+          loadChildren: () => import('../space/space.module').then(m => m.SpaceModule)
+        },
         /*{ path: '**', redirectTo: 'my-day', pathMatch: 'full' },*/
       ],
     },
