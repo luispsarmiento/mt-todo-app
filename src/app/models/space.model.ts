@@ -3,4 +3,5 @@ export interface Space {
   _id?: any;
   name: string;
   description?: string;
+  isError?: boolean;
 }

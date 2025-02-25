@@ -1,7 +1,21 @@
 <app-content-layout>
-  <div content-layout-header>
+  <div content-layout-header class="w-full">
     <h1 class="text-2xl font-bold text-gray-800">{{title}}</h1>
-    <!--<h2 *ngIf="filter == 'MY_DAY'" class="text-lg text-gray-600">{{ currentDate }}</h2>-->
+    <div class="flex items-center gap-2 space-y-2 w-full">
+      <p *ngIf="!isEditing" 
+       (click)="isEditing = true"
+       class="w-full text-lg text-gray-600 cursor-text hover:bg-gray-100 py-1 rounded">
+       {{ spaceDescription || 'Click to add description' }}
+      </p>
+      <input *ngIf="isEditing" 
+       type="text" 
+       [(ngModel)]="spaceDescription"
+       (blur)="saveChanges()"
+       (keyup.enter)="saveChanges()"
+       #descInput
+       class="w-full text-gray-700 py-1 rounded-lg border-none outline-none focus:ring-0 hover:bg-gray-50"
+       autofocus>
+    </div>
   </div>
   <div content-layout-body>
     <!--<app-task *ngFor="let task of tasks$ | async" [title]="task.name" [task]="task"

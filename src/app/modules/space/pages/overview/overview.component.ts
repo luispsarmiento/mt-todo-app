@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import { SpaceService } from 'src/app/services/space.service';
 
 @Component({
   selector: 'app-overview',
@@ -11,15 +13,32 @@ export class OverviewComponent implements OnInit, AfterViewInit {
 
   title: string = "Space Overview";
 
-  quizId$: Observable<string | undefined>;
+  spaceId$: Observable<string | undefined>;
+  isEditing: any;
+  spaceDescription: any;
 
-  constructor(private activatedRoute: ActivatedRoute) {
-    this.quizId$ = this.activatedRoute.params.pipe(map((params) => params['id']));
+  faEdit = faEdit;
+  spaceId!: string;
+
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private service: SpaceService) {
+    this.spaceId$ = this.activatedRoute.params.pipe(map((params) => params['id']));
   }
 
   ngAfterViewInit(): void {
-    this.quizId$.subscribe((id) => {
-      console.log(id);
+    this.spaceId$.subscribe((id) => {
+      if (id) {
+        this.spaceId = id;
+      }
+
+      this.service.spaces$.subscribe((spaces) => {
+        const space = spaces.find((space) => space._id === id);
+        if (space) {
+          this.title = space.name;
+          this.spaceDescription = space.description;
+        }
+      });
     });
   }
 
@@ -27,4 +46,11 @@ export class OverviewComponent implements OnInit, AfterViewInit {
 
   }
 
+  saveChanges(){
+    this.isEditing = false;
+    this.service.update(this.spaceId, {
+      name: this.title,
+      description: this.spaceDescription
+    }).subscribe();
+  }
 }

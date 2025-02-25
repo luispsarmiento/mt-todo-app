@@ -59,4 +59,32 @@ export class SpaceService extends HttpService{
       })
     );
   }
+
+  update(spaceId: string, space: Partial<Space>) {
+    return this.httpClient.patch<HttpResponse<Space>>(
+      `${environment.baseUrl}${this.endpoint}/${spaceId}`, 
+      space, 
+      {context: checkToken()}
+    ).pipe(
+      tap((res: HttpResponse<Space>) => {
+      this.updateSpacesSubject(spaceId, res.data);
+      }),
+      tap({
+        error: () => {
+          this.updateSpacesSubject(spaceId, { isError: true });
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
+  private updateSpacesSubject(spaceId: string, space: Partial<Space>) {
+    const currentSpaces = this.spacesSubject.value;
+    const index = currentSpaces.findIndex(s => s._id === spaceId);
+    if (index !== -1) {
+      const updatedSpaces = [...currentSpaces];
+      updatedSpaces[index] = { ...updatedSpaces[index], ...space };
+      this.spacesSubject.next(updatedSpaces);
+    }
+  }
 }
