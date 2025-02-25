@@ -1,5 +1,5 @@
 import { Dialog } from '@angular/cdk/dialog';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { DialogComponent, MtDialogResultData } from 'src/app/modules/shared/components/dialog/dialog.component';
 import {
   faPlus,
@@ -17,6 +17,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./space-menu.component.css']
 })
 export class SpaceMenuComponent implements OnInit {
+
+  @Output()
+  onNavigateToClick = new EventEmitter();
+
   faPlus = faPlus;
   faFolder = faFolder;
   faSpinner = faSpinner;
@@ -59,5 +63,6 @@ export class SpaceMenuComponent implements OnInit {
 
   navigateTo(route: string) {
     this.router.navigate([route]);
+    this.onNavigateToClick.emit();
   }
 }
