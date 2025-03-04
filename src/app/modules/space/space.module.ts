@@ -8,6 +8,7 @@ import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { FormsModule } from '@angular/forms';
 import { OverviewComponent } from './pages/overview/overview.component';
 import { SpaceRoutingModule } from './space-routing.module';
+import { TaskModule } from "../task/task.module";
 
 @NgModule({
   imports: [
@@ -17,8 +18,9 @@ import { SpaceRoutingModule } from './space-routing.module';
     FontAwesomeModule,
     OverlayModule,
     CdkAccordionModule,
-    FormsModule
-  ],
+    FormsModule,
+    TaskModule
+],
   declarations: [SpaceMenuComponent, OverviewComponent],
   exports: [SpaceMenuComponent]
 })

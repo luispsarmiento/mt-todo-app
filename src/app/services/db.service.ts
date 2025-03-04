@@ -6,6 +6,8 @@ import { db } from './db';
 })
 export class DbService {
 
+  readonly tasks = db.table('Task');
+
   constructor() { 
   }
 

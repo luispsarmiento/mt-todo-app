@@ -10,6 +10,7 @@ import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { AllComponent } from './pages/all/all.component';
 import { MyDayComponent } from './pages/my-day/my-day.component';
 import { FormsModule } from '@angular/forms';
+import { TaskListComponent } from './components/task-list/task-list.component';
 
 @NgModule({
   imports: [
@@ -25,7 +26,11 @@ import { FormsModule } from '@angular/forms';
     TaskOverviewComponent,
     TaskComponent,
     AllComponent,
-    MyDayComponent
+    MyDayComponent,
+    TaskListComponent
+  ],
+  exports:[
+    TaskListComponent
   ]
 })
 export class TaskModule { }

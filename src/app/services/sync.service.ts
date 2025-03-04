@@ -3,7 +3,7 @@ import { DbService } from './db.service';
 import { environment } from 'src/environments/environment';
 import { Task } from '../models/task.model';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, forkJoin, map, tap } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, forkJoin, map, tap } from 'rxjs';
 import { HttpResponse } from '../models/http.model';
 import { checkToken } from '../interceptors/token.interceptor';
 import { LoaderService } from './loader.service';
@@ -13,6 +13,9 @@ import { HttpService } from './http.service';
   providedIn: 'root'
 })
 export class SyncService extends HttpService {
+  private syncEvtSubject = new BehaviorSubject<void>(undefined);
+  syncEvt$ = this.syncEvtSubject.asObservable();
+
   readonly worker: Worker | undefined;
 
   readonly endpoint = "/tasks"
@@ -113,6 +116,7 @@ export class SyncService extends HttpService {
 
       this.syncQueue = [];
       this.loaderService.close();
+      //this.syncEvtSubject.next();
     }
   }
 

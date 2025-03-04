@@ -15,6 +15,7 @@ export interface Task{
     breakDate?: string | null;
     isTimerRunning?: boolean;
     focusTimer?: number;
+    space_id?: any;
 }
 
 export interface SubTask{

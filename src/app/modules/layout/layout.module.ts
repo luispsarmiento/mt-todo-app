@@ -17,14 +17,14 @@ import { SpaceModule } from "../space/space.module";
         LateralMenuComponent
     ],
     imports: [
-    CommonModule,
-    LayoutRoutingModule,
-    OverlayModule,
-    FontAwesomeModule,
-    SharedModule,
-    CdkAccordionModule,
-    SpaceModule
-],
+        CommonModule,
+        LayoutRoutingModule,
+        OverlayModule,
+        FontAwesomeModule,
+        SharedModule,
+        CdkAccordionModule,
+        SpaceModule
+    ],
     exports: [
         LateralMenuComponent
     ]

@@ -18,11 +18,12 @@
     </div>
   </div>
   <div content-layout-body>
-    <!--<app-task *ngFor="let task of tasks$ | async" [title]="task.name" [task]="task"
-      [isDone]="task.status === STATUS_COMPLETED ? true : false" (onDelete)="deleteTask(task)"
-      (onDone)="task.status = $event ? STATUS_COMPLETED : STATUS_PENDING; updateTaskStatus(task)"
-      (onTaskClick)="selectTask(task)">
-    </app-task>-->
+    <app-task-list [tasks]="tasks" 
+      [loading]="tasksLoading"
+      (taskDelete)="deleteTask($event)"
+      (taskStatusChange)="updateTaskStatus($event)"
+      (taskSelect)="selectTask($event)">
+    </app-task-list>
   </div>
   <div content-layout-footer>
     <!--<div class="w-full">
@@ -33,3 +34,8 @@
     </div>-->
   </div>
 </app-content-layout>
+
+<ng-template [ngIf]="isSidebarOpen">
+  <app-sidebar (onClose)="isSidebarOpen = !isSidebarOpen" [isOpen]="isSidebarOpen" [taskDetail]="taskSelected"
+    (onChangeTaskDetail)="updateTask($event)"></app-sidebar>
+</ng-template>

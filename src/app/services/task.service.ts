@@ -4,12 +4,17 @@ import { liveQuery } from 'dexie';
 import { HttpErrorHandler } from '../models/http.model';
 import { SyncService } from './sync.service';
 import { Task } from '../models/task.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
+
+  private loadingSubject = new BehaviorSubject<boolean>(false);
   
+  loading$ = this.loadingSubject.asObservable();
+  sync$ = this.sync.syncEvt$;
   constructor(
     private db: DbService,
     private sync: SyncService
@@ -48,6 +53,21 @@ export class TaskService {
         todoListId: this.todoList.id,
       })
       .toArray();*/
+  }
+
+  async listBySpaceId(spaceId: any) {
+    this.loadingSubject.next(true);
+
+    let result = await this.find();
+
+    this.loadingSubject.next(false);
+
+    return result.filter((task: Task) => !task.isDeleted && task.space_id === spaceId)
+                 .sort((a: Task, b: Task) => b.id - a.id);
+  }
+
+  liveQueryListBySpaceId(spaceId: any) {
+    return liveQuery(() => this.listBySpaceId(spaceId));
   }
 
   async find(){
