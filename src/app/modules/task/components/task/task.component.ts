@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { 
   faSquare,
   faSquareCheck,
   faTrash,
   faPlay,
-  faPause
+  faPause,
+  faEllipsisVertical,
+  faArrowRight
 } from '@fortawesome/free-solid-svg-icons';
 import { interval, Subscription } from 'rxjs';
 import { Task } from 'src/app/models/task.model';
@@ -15,8 +17,12 @@ import { Task } from 'src/app/models/task.model';
   styleUrls: []
 })
 export class TaskComponent implements OnInit {
+  @ViewChild('menuTrigger') menuTrigger!: ElementRef;
+
   faPlay = faPlay;
   faPause = faPause;
+  faEllipsisVertical = faEllipsisVertical;
+  faArrowRight = faArrowRight;
 
   @Input()
   title = '';
@@ -41,9 +47,11 @@ export class TaskComponent implements OnInit {
   icon = faSquare;
 
   iconTrash = faTrash;
-  iconTrashClassName: 'text-gray-700' | 'text-red-500' = 'text-gray-700';
+  //iconTrashClassName: 'text-gray-700' | 'text-red-500' = 'text-gray-700';
 
   focusTimer: any;
+
+  isMenuOpen = false;
 
   private timerSubs!: Subscription;
   elapsedFocustimer: string = '0:00';
@@ -83,6 +91,11 @@ export class TaskComponent implements OnInit {
     this.isDone = !this.isDone;
     this.stopTimer();
     this.onDone.emit(this.isDone);
+  }
+
+  toggleMenu(event: Event) {
+    event.stopPropagation();
+    this.isMenuOpen = !this.isMenuOpen;
   }
 
   private startTimer(){

@@ -20,9 +20,9 @@
           </span>
         </button>
       </div>
-      <button class="delete-button relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (mouseenter)="iconTrashClassName = 'text-red-500'" (mouseleave)="iconTrashClassName = 'text-gray-700'" (click)="onDelete.emit()">
-        <fa-icon class="absolute inset-0 m-auto text-3xl" [icon]="iconTrash" [ngClass]="iconTrashClassName"></fa-icon>
-      </button> 
+      <button cdkOverlayOrigin #menuTrigger="cdkOverlayOrigin" class="relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (click)="toggleMenu($event)">
+        <fa-icon class="absolute inset-0 m-auto text-3xl" [icon]="faEllipsisVertical"></fa-icon>
+      </button>
     </div>
   </ng-template>
   
@@ -40,9 +40,30 @@
           Transcurrido: {{ focusTimer.minutes + '.' + focusTimer.seconds }} min.
         </span>
       </div>
-      <button class="delete-button relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (mouseenter)="iconTrashClassName = 'text-red-500'" (mouseleave)="iconTrashClassName = 'text-gray-700'" (click)="onDelete.emit()">
-        <fa-icon class="absolute inset-0 m-auto text-3xl" [icon]="iconTrash" [ngClass]="iconTrashClassName"></fa-icon>
+      <button cdkOverlayOrigin #menuTrigger="cdkOverlayOrigin" class="relative p-0 overflow-hidden text-blue-500 hover:text-blue-700 focus:outline-none w-10 h-10" (click)="toggleMenu($event)">
+        <fa-icon class="absolute inset-0 m-auto text-3xl" [icon]="faEllipsisVertical"></fa-icon>
       </button>
     </div>
   </ng-template>
 </div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="menuTrigger"
+  [cdkConnectedOverlayOpen]="isMenuOpen"
+  (overlayOutsideClick)="isMenuOpen = false">
+  <div class="bg-white rounded-md shadow-lg z-50 py-1 min-w-[160px]">
+    <button 
+      class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+      (click)="$event.stopPropagation()">
+      <fa-icon [icon]="faArrowRight"></fa-icon>
+      Mover a
+    </button>
+    <button 
+      class="w-full px-4 py-2 text-sm flex items-center gap-2 text-gray-700 hover:text-red-500"
+      (click)="onDelete.emit(); isMenuOpen = false; $event.stopPropagation()">
+      <fa-icon [icon]="iconTrash"></fa-icon>
+      Eliminar
+    </button>
+  </div>
+</ng-template>
