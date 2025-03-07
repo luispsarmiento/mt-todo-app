@@ -1,3 +1,4 @@
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { 
   faSquare,
@@ -6,10 +7,12 @@ import {
   faPlay,
   faPause,
   faEllipsisVertical,
-  faArrowRight
+  faArrowRight,
+  faFolder
 } from '@fortawesome/free-solid-svg-icons';
 import { interval, Subscription } from 'rxjs';
 import { Task } from 'src/app/models/task.model';
+import { SpaceService } from 'src/app/services/space.service';
 
 @Component({
   selector: 'app-task',
@@ -19,46 +22,40 @@ import { Task } from 'src/app/models/task.model';
 export class TaskComponent implements OnInit {
   @ViewChild('menuTrigger') menuTrigger!: ElementRef;
 
+  // Inputs and Outputs
+  @Input() title = '';
+  @Input() isDone: boolean = false;
+  @Input() task!: Task;
+  @Output() onDone = new EventEmitter<boolean>();
+  @Output() onDelete = new EventEmitter<void>();
+  @Output() onTaskClick = new EventEmitter<void>();
+  @Output() onMoveToSpace = new EventEmitter<{taskId: string, spaceId: string}>();
+
+  // Icons
+  faSquare = faSquare;
+  faSquareCheck = faSquareCheck;
   faPlay = faPlay;
   faPause = faPause;
   faEllipsisVertical = faEllipsisVertical;
   faArrowRight = faArrowRight;
+  faFolder = faFolder;
+  faTrash = faTrash;
 
-  @Input()
-  title = '';
-
-  @Input()
-  isDone: boolean = false;
-
-  @Input()
-  task!: Task;
-
-  @Output()
-  onDone = new EventEmitter();
-
-  @Output()
-  onDelete = new EventEmitter();
-
-  @Output()
-  onTaskClick = new EventEmitter();
-
-  faSquare = faSquare;
-  faSquareCheck = faSquareCheck;
+  // UI State
+  isMenuOpen = false;
+  isSpacesExpanded = false;
   icon = faSquare;
 
-  iconTrash = faTrash;
-  //iconTrashClassName: 'text-gray-700' | 'text-red-500' = 'text-gray-700';
-
+  // Timer related
   focusTimer: any;
-
-  isMenuOpen = false;
-
-  private timerSubs!: Subscription;
   elapsedFocustimer: string = '0:00';
-
+  private timerSubs!: Subscription;
   private timer: number = 0;
 
-  constructor() { }
+  // Services data
+  spaces$ = this.spaceService.spaces$;
+
+  constructor(private spaceService: SpaceService) { }
 
   onMouseEnter(){
     this.icon = this.faSquareCheck;
@@ -96,6 +93,17 @@ export class TaskComponent implements OnInit {
   toggleMenu(event: Event) {
     event.stopPropagation();
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  toggleSpacesMenu(event: Event) {
+    event.stopPropagation();
+    this.isSpacesExpanded = !this.isSpacesExpanded;
+  }
+
+  moveToSpace(spaceId: string) {
+    this.onMoveToSpace.emit({ taskId: this.task._id, spaceId });
+    this.isMenuOpen = false;
+    this.isSpacesExpanded = false;
   }
 
   private startTimer(){

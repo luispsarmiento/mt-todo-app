@@ -53,16 +53,39 @@
   [cdkConnectedOverlayOpen]="isMenuOpen"
   (overlayOutsideClick)="isMenuOpen = false">
   <div class="bg-white rounded-md shadow-lg z-50 py-1 min-w-[160px]">
-    <button 
-      class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
-      (click)="$event.stopPropagation()">
-      <fa-icon [icon]="faArrowRight"></fa-icon>
-      Mover a
-    </button>
+    <div>
+      <button  
+        class="w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+        (click)="toggleSpacesMenu($event)">
+        <fa-icon 
+          [icon]="faArrowRight"
+          [class.rotate-90]="isSpacesExpanded">
+        </fa-icon>
+        Mover a
+      </button>
+
+      <!-- Spaces Accordion Content -->
+      <div 
+        class="overflow-hidden transition-all duration-200"
+        [class.h-0]="!isSpacesExpanded"
+        [class.border-t]="isSpacesExpanded">
+        <ng-container *ngIf="spaces$ | async as spaces">
+          <button *ngFor="let space of spaces"
+            class="w-full pl-8 pr-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
+            (click)="moveToSpace(space._id)"
+            [class.text-blue-600]="space._id === task.space_id"
+            [class.bg-gray-50]="space._id === task.space_id">
+            <fa-icon [icon]="faFolder"></fa-icon>
+            {{ space.name }}
+          </button>
+        </ng-container>
+      </div>
+    </div>
+
     <button 
       class="w-full px-4 py-2 text-sm flex items-center gap-2 text-gray-700 hover:text-red-500"
       (click)="onDelete.emit(); isMenuOpen = false; $event.stopPropagation()">
-      <fa-icon [icon]="iconTrash"></fa-icon>
+      <fa-icon [icon]="faTrash"></fa-icon>
       Eliminar
     </button>
   </div>
