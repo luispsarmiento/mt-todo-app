@@ -106,6 +106,19 @@ export class OverviewComponent implements OnInit, AfterViewInit {
   moveTaskToSpace($event: Task){
     this.taskService.moveToSpace($event, $event.space_id).subscribe();
   }
+
+  addTask($event: string) {
+    let newTask: Task = {
+      name: $event,
+      priority: 0,
+      status: 'pending',
+      isSync: false,
+      isDeleted: false,
+      space_id: this.spaceId
+    };
+    
+    this.taskService.add(newTask)
+  }
   
   private initTaskListLiveQuery(){
     this.tasks$ = null;

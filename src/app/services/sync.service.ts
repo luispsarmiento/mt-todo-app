@@ -97,6 +97,7 @@ export class SyncService extends HttpService {
             scheduledDate: task.scheduledDate,
             //status: task.status,
             completedDate: task.completedDate,
+            space_id: task.space_id,
           };
 
           req = this.http.post<HttpResponse<{ _id: string }>>(`${environment.baseUrl}${this.endpoint}`, data, { context: checkToken() })

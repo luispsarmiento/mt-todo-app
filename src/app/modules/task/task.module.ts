@@ -11,6 +11,7 @@ import { AllComponent } from './pages/all/all.component';
 import { MyDayComponent } from './pages/my-day/my-day.component';
 import { FormsModule } from '@angular/forms';
 import { TaskListComponent } from './components/task-list/task-list.component';
+import { AddTaskComponent } from './components/add-task/add-task.component';
 
 @NgModule({
   imports: [
@@ -27,10 +28,12 @@ import { TaskListComponent } from './components/task-list/task-list.component';
     TaskComponent,
     AllComponent,
     MyDayComponent,
-    TaskListComponent
+    TaskListComponent,
+    AddTaskComponent
   ],
   exports:[
-    TaskListComponent
+    TaskListComponent,
+    AddTaskComponent
   ]
 })
 export class TaskModule { }
