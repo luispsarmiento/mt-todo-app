@@ -22,7 +22,8 @@
       [loading]="tasksLoading"
       (taskDelete)="deleteTask($event)"
       (taskStatusChange)="updateTaskStatus($event)"
-      (taskSelect)="selectTask($event)">
+      (taskSelect)="selectTask($event)"
+      (taskMoveToSpace)="moveTaskToSpace($event)">
     </app-task-list>
   </div>
   <div content-layout-footer>

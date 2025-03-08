@@ -1,4 +1,3 @@
-import { ConnectedPosition } from '@angular/cdk/overlay';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
 import { 
   faSquare,
@@ -29,7 +28,7 @@ export class TaskComponent implements OnInit {
   @Output() onDone = new EventEmitter<boolean>();
   @Output() onDelete = new EventEmitter<void>();
   @Output() onTaskClick = new EventEmitter<void>();
-  @Output() onMoveToSpace = new EventEmitter<{taskId: string, spaceId: string}>();
+  @Output() onMoveToSpace = new EventEmitter<string>();
 
   // Icons
   faSquare = faSquare;
@@ -101,7 +100,7 @@ export class TaskComponent implements OnInit {
   }
 
   moveToSpace(spaceId: string) {
-    this.onMoveToSpace.emit({ taskId: this.task._id, spaceId });
+    this.onMoveToSpace.emit(spaceId);
     this.isMenuOpen = false;
     this.isSpacesExpanded = false;
   }

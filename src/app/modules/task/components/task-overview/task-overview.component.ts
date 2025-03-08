@@ -118,6 +118,10 @@ export class TaskOverviewComponent implements OnInit, OnDestroy {
     this.initTaskListLiveQuery();
   }
 
+  moveTaskToSpace(task: Task){
+    this.taskService.moveToSpace(task, task.space_id).subscribe();
+  }
+
   private setMyDayFilterDate(){
     let now = new Date();
     this.myDayFilterFromDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();

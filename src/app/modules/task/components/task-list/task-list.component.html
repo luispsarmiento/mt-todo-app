@@ -8,7 +8,8 @@
           [isDone]="task.status === STATUS_COMPLETED ? true : false"
           (onDelete)="taskDelete.emit(task)"
           (onDone)="task.status = $event ? STATUS_COMPLETED : STATUS_PENDING; taskStatusChange.emit(task)"
-          (onTaskClick)="taskSelect.emit(task)">
+          (onTaskClick)="taskSelect.emit(task)"
+          (onMoveToSpace)="task.space_id = $event; taskMoveToSpace.emit(task)">
         </app-task>
       </div>
     </ng-container>

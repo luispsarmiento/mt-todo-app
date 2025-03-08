@@ -13,6 +13,7 @@ export class TaskListComponent implements OnInit {
   @Output() taskStatusChange = new EventEmitter<Task>();
   @Output() taskDelete = new EventEmitter<Task>();
   @Output() taskSelect = new EventEmitter<Task>();
+  @Output() taskMoveToSpace = new EventEmitter<Task>();
 
   faSpinner = faSpinner
   faList = faList;

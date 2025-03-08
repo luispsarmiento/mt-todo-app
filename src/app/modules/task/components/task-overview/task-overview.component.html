@@ -22,7 +22,7 @@
       <app-task *ngFor="let task of tasks$ | async" [title]="task.name" [task]="task"
         [isDone]="task.status === STATUS_COMPLETED ? true : false" (onDelete)="deleteTask(task)"
         (onDone)="task.status = $event ? STATUS_COMPLETED : STATUS_PENDING; updateTaskStatus(task)"
-        (onTaskClick)="selectTask(task)">
+        (onTaskClick)="selectTask(task)" (onMoveToSpace)="task.space_id = $event; moveTaskToSpace(task)">
       </app-task>
     </div>
 

@@ -4,22 +4,32 @@ import { liveQuery } from 'dexie';
 import { HttpErrorHandler } from '../models/http.model';
 import { SyncService } from './sync.service';
 import { Task } from '../models/task.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, catchError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { HttpResponse } from '../models/http.model';
+import { environment } from 'src/environments/environment';
+import { checkToken } from '../interceptors/token.interceptor';
+import { HttpService } from './http.service';
+import { LoaderService } from './loader.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class TaskService {
+export class TaskService extends HttpService {
 
   private loadingSubject = new BehaviorSubject<boolean>(false);
+
+  readonly endpointMoveToSpace = "/tasks/move-to-space";
   
   loading$ = this.loadingSubject.asObservable();
   sync$ = this.sync.syncEvt$;
   constructor(
     private db: DbService,
-    private sync: SyncService
+    private sync: SyncService,
+    private http: HttpClient,
+    private loaderService: LoaderService
   ) {
-    
+    super();
   }
 
   //tasks$ = liveQuery(() => this.listTasks());
@@ -94,5 +104,26 @@ export class TaskService {
 
   get(){
     return this.sync.syncGet();
+  }
+
+  moveToSpace(task: Task, spaceId: any) {
+    this.loaderService.show();
+
+    const data = {
+      space_id: spaceId
+    };
+    
+    return this.http.patch<HttpResponse<{ message: string, data: Task }>>(`${environment.baseUrl}${this.endpointMoveToSpace}/${task._id}`, data, { context: checkToken() })
+                  .pipe(
+                    map((res: HttpResponse<{ message: string, data: Task }>) => {
+                      let _task = { ...task, ...res.data, isSync: true };
+                      this.db.update('Task', _task.id, _task);
+                      this.loaderService.close();
+                    }),
+                    catchError(err => {
+                      this.loaderService.close();
+                      return this.handleError(err);
+                    }
+                  ));
   }
 }
