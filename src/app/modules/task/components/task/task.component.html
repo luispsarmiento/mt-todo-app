@@ -74,7 +74,8 @@
             class="w-full pl-8 pr-4 py-2 text-sm text-gray-700 hover:bg-gray-100 flex items-center gap-2"
             (click)="moveToSpace(space._id)"
             [class.text-blue-600]="space._id === task.space_id"
-            [class.bg-gray-50]="space._id === task.space_id">
+            [class.bg-gray-50]="space._id === task.space_id"
+            disabled="{{ space._id === task.space_id }}">
             <fa-icon [icon]="faFolder"></fa-icon>
             {{ space.name }}
           </button>
