@@ -11,6 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { interval, Subscription } from 'rxjs';
 import { Task } from 'src/app/models/task.model';
+import { Space } from 'src/app/models/space.model';
 import { SpaceService } from 'src/app/services/space.service';
 
 @Component({
@@ -53,6 +54,7 @@ export class TaskComponent implements OnInit {
 
   // Services data
   spaces$ = this.spaceService.spaces$;
+  spaceName: string = "";
 
   constructor(private spaceService: SpaceService) { }
 
@@ -67,6 +69,9 @@ export class TaskComponent implements OnInit {
   ngOnInit() {
     this.setFocusTimer();
     this.task.isTimerRunning = false;
+    this.spaceService.spaces$.subscribe(spaces => {
+      this.spaceName = spaces.find((space: Space) => space._id === this.task.space_id)?.name || "";
+    });
   }
 
   ngOnDestroy() {

@@ -6,7 +6,16 @@
       </button>  
       <div class="task-details flex-auto ml-4 mr-4">
         <p (click)="onTaskClick.emit()" class="task-name text-sm md:text-base font-semibold text-gray-700 whitespace-normal break-words overflow-hidden">{{ title }}</p>
-        <p class="task-date text-xs text-gray-500">{{ task.createAt | date:'dd/MM/YYYY HH:mm' }}</p>
+        
+        <div class="flex items-center gap-2 mt-1">
+          <ng-container *ngIf="task.space_id">
+            <div class="flex items-center gap-1 px-2 py-0.5 bg-gray-200 rounded-full text-xs text-gray-600">
+              <fa-icon [icon]="faFolder" class="text-blue-500"></fa-icon>
+              <span>{{ spaceName }}</span>
+            </div>
+          </ng-container>
+          <p class="task-date text-xs text-gray-500">{{ task.createAt | date:'dd/MM/YYYY HH:mm' }}</p>
+        </div>
       </div>
       <!-- Timer Section -->
       <div class="flex items-center gap-2">
@@ -33,7 +42,15 @@
       </button>  
       <div class="task-details flex-auto ml-4 mr-4">
         <p (click)="onTaskClick.emit()" class="task-name text-sm md:text-base font-semibold text-gray-700 line-through opacity-50 whitespace-normal break-words overflow-hidden">{{ title }}</p>
-        <p class="task-date text-xs text-gray-500">{{ task.createAt | date:'dd/MM/YYYY HH:mm' }}</p>
+        <div class="flex items-center gap-2 mt-1">
+          <ng-container *ngIf="task.space_id">
+            <div class="flex items-center gap-1 px-2 py-0.5 bg-gray-200 rounded-full text-xs text-gray-600">
+              <fa-icon [icon]="faFolder" class="text-blue-500"></fa-icon>
+              <span>{{ spaceName }}</span>
+            </div>
+          </ng-container>
+          <p class="task-date text-xs text-gray-500">{{ task.createAt | date:'dd/MM/YYYY HH:mm' }}</p>
+        </div>
       </div>
       <div *ngIf="task.focusTimer" class="text-sm text-gray-600">
         <span class="ml-2">
