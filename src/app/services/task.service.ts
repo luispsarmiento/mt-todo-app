@@ -107,6 +107,7 @@ export class TaskService extends HttpService {
   }
 
   moveToSpace(task: Task, spaceId: any) {
+    console.log('moveToSpace');
     this.loaderService.show();
 
     const data = {

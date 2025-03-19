@@ -104,6 +104,7 @@ export class OverviewComponent implements OnInit, AfterViewInit {
   }
 
   moveTaskToSpace($event: Task){
+    console.log('moveToSpace');
     this.taskService.moveToSpace($event, $event.space_id).subscribe();
   }
 

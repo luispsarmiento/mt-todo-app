@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { 
   faSquare,
   faSquareCheck,
@@ -20,7 +20,7 @@ import { SpaceService } from 'src/app/services/space.service';
   styleUrls: []
 })
 export class TaskComponent implements OnInit {
-  @ViewChild('menuTrigger') menuTrigger!: ElementRef;
+  @ViewChild('menuTrigger') menuTrigger: ElementRef = new ElementRef(null);
 
   // Inputs and Outputs
   @Input() title = '';
@@ -55,6 +55,7 @@ export class TaskComponent implements OnInit {
   // Services data
   spaces$ = this.spaceService.spaces$;
   spaceName: string = "";
+  spaces: Space[] = [];
 
   constructor(private spaceService: SpaceService) { }
 
@@ -71,6 +72,10 @@ export class TaskComponent implements OnInit {
     this.task.isTimerRunning = false;
     this.spaceService.spaces$.subscribe(spaces => {
       this.spaceName = spaces.find((space: Space) => space._id === this.task.space_id)?.name || "";
+      
+      if (this.spaces.length != spaces.length) {
+        this.spaces = spaces;
+      }
     });
   }
 
@@ -105,6 +110,7 @@ export class TaskComponent implements OnInit {
   }
 
   moveToSpace(spaceId: string) {
+    console.log('moveToSpace');
     this.onMoveToSpace.emit(spaceId);
     this.isMenuOpen = false;
     this.isSpacesExpanded = false;
