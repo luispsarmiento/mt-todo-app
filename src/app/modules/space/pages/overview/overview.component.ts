@@ -44,6 +44,10 @@ export class OverviewComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    
+  }
+
+  ngOnInit() {
     this.spaceId$.subscribe((id) => {
       if (id) {
         this.spaceId = id;
@@ -62,9 +66,6 @@ export class OverviewComponent implements OnInit, AfterViewInit {
         });
       }
     });
-  }
-
-  ngOnInit() {
   }
 
   saveChanges(){
