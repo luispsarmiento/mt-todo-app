@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { LoaderService } from 'src/app/services/loader.service';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,10 @@ export class LoginComponent implements OnInit {
   password: string = "";
 
   isBtnDisabled: boolean = false;
+
+  faEye = faEye;
+  faEyeSlash = faEyeSlash;
+  showPassword = false;
 
   constructor(
     private authService: AuthService,
@@ -39,5 +44,9 @@ export class LoginComponent implements OnInit {
         console.error(err)
       }
     })
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }
