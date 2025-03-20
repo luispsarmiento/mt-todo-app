@@ -55,6 +55,14 @@
         <textarea [(ngModel)]="textareaContent" (blur)="onTextareaChange()"
         class="flex-grow px-2 py-1 rounded-lg border-none outline-none w-full resize-none focus:border-none focus:outline-none focus:ring-0" rows="8"></textarea>
       </div>
+      <!--<div class="bg-white p-4 rounded-lg shadow-md mb-4">
+        <app-editor
+          [(content)]="textareaContent"
+          [placeholder]="'Add a more detailed description...'"
+          (contentChange)="onTextareaChange()"
+          class="min-h-[150px]">
+        </app-editor>
+      </div>-->
     </div>
   </div>
 </div>
